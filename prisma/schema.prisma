@@ -1,0 +1,24 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Review {
+  id               String   @id @default(uuid())
+  instaId          String
+  birthCodeHash    String
+  scoreLooks       Int
+  scorePersonality Int
+  scoreLove        Int
+  scoreManner      Int
+  scoreReunion     Int
+  comment          String
+  ipHash           String
+  createdAt        DateTime @default(now())
+
+  @@index([instaId, birthCodeHash])
+}
