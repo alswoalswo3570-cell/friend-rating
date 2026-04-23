@@ -19,6 +19,7 @@
     "@libsql/client": "^0.17.2",
     "@prisma/adapter-libsql": "^6.19.3",
     "@prisma/client": "^6.19.3",
+    "html2canvas": "^1.4.1",
     "next": "14.2.15",
     "prisma": "^6.19.3",
     "react": "^18.3.1",
