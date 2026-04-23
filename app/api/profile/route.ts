@@ -19,20 +19,26 @@ export async function GET(req: NextRequest) {
 
   const birthCodeHash = hashBirth(birthCode);
 
-  const reviews = await prisma.review.findMany({
-    where: { instaId, birthCodeHash },
-    orderBy: { createdAt: "desc" },
-    select: {
-      id: true,
-      scoreLooks: true,
-      scorePersonality: true,
-      scoreLove: true,
-      scoreManner: true,
-      scoreReunion: true,
-      comment: true,
-      createdAt: true,
-    },
-  });
+  let reviews;
+  try {
+    reviews = await prisma.review.findMany({
+      where: { instaId, birthCodeHash },
+      orderBy: { createdAt: "desc" },
+      select: {
+        id: true,
+        scoreLooks: true,
+        scorePersonality: true,
+        scoreLove: true,
+        scoreManner: true,
+        scoreReunion: true,
+        comment: true,
+        createdAt: true,
+      },
+    });
+  } catch (e) {
+    console.error("DB_ERROR", e);
+    return NextResponse.json({ error: String(e) }, { status: 500 });
+  }
 
   if (reviews.length === 0) {
     return NextResponse.json({ exists: false, count: 0 }, { status: 404 });
