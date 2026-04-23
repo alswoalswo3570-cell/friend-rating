@@ -143,6 +143,16 @@ export default function Landing() {
           <Emoji name="custard" size={14} />
           {t("common.preview.footer")}
         </p>
+
+        <div className="mt-4 flex items-center justify-center gap-4 text-[11px] text-ink/35">
+          <Link href="/privacy" className="underline underline-offset-2 hover:text-ink/60 transition">
+            개인정보처리방침
+          </Link>
+          <span>·</span>
+          <Link href="/terms" className="underline underline-offset-2 hover:text-ink/60 transition">
+            이용약관
+          </Link>
+        </div>
       </div>
     </main>
   );
