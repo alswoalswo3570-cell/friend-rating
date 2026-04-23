@@ -4,8 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
+    "postinstall": "prisma generate",
     "db:seed": "tsx --env-file=.env --env-file=.env.local prisma/seed.ts",
     "strings:export": "tsx scripts/export-strings.ts",
     "strings:import": "tsx scripts/import-strings.ts"
@@ -15,6 +16,8 @@
   },
   "dependencies": {
     "@iconify/react": "^6.0.2",
+    "@libsql/client": "^0.17.2",
+    "@prisma/adapter-libsql": "^6.19.3",
     "@prisma/client": "^6.19.3",
     "next": "14.2.15",
     "prisma": "^6.19.3",
