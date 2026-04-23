@@ -1,7 +1,10 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import "./globals.css";
 import ToastHost from "@/components/Toast";
 import { strings } from "@/lib/strings";
+
+const GA_ID = "G-DH81CG7141";
 
 export const metadata: Metadata = {
   title: strings["meta.title"].ko,
@@ -40,6 +43,18 @@ export default function RootLayout({
       <body className="font-sans">
         <div className="mobile-shell">{children}</div>
         <ToastHost />
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="ga4-init" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GA_ID}');
+          `}
+        </Script>
       </body>
     </html>
   );
