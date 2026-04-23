@@ -1,7 +1,5 @@
-import { PrismaClient } from "@prisma/client";
 import { createHash } from "node:crypto";
-
-const prisma = new PrismaClient();
+import { prisma } from "../lib/db";
 
 const BIRTH_SALT = process.env.BIRTH_SALT ?? "dev-birth-salt";
 const IP_SALT = process.env.IP_SALT ?? "dev-ip-salt";
