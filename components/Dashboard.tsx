@@ -244,16 +244,26 @@ function Content({ data }: { data: ProfileResponse }) {
         count: data.count,
       });
       const file = new File([blob], "ex-rating.png", { type: "image/png" });
+
+      // 공유 시트 시도 (iOS Safari 등)
       if (navigator.canShare?.({ files: [file] })) {
-        await navigator.share({ files: [file], title: `@${data.instaId} 통지표` });
-      } else {
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "ex-rating.png";
-        a.click();
-        URL.revokeObjectURL(url);
+        try {
+          await navigator.share({ files: [file], title: `@${data.instaId} 통지표` });
+          return; // 공유 성공
+        } catch (e) {
+          // 사용자가 취소한 경우 (AbortError) → 저장으로 대체
+          if (e instanceof Error && e.name === "AbortError") return;
+        }
       }
+
+      // 공유 불가 or 실패 → 이미지 저장 + 안내
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "ex-rating.png";
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast("저장 완료! 인스타 스토리 → 갤러리에서 선택 📸", "camera-with-flash");
     } catch {
       showToast("이미지 생성에 실패했어요 😢", "crying-face");
     } finally {
