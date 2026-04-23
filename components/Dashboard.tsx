@@ -2,13 +2,13 @@
 
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import ScoreRadarChart, { ScoreAxis } from "@/components/ScoreRadarChart";
 import Emoji, { type EmojiName } from "@/components/Emoji";
 import RichText from "@/components/RichText";
 import { showToast } from "@/components/Toast";
 import { t } from "@/lib/strings";
-import ShareCard from "@/components/ShareCard";
+import { drawShareCard } from "@/lib/drawShareCard";
 
 const scoreEmojiName = (v: number): EmojiName =>
   v >= 4.5
@@ -230,35 +230,32 @@ function ErrorBox({ message }: { message: string }) {
 }
 
 function Content({ data }: { data: ProfileResponse }) {
-  const cardRef = useRef<HTMLDivElement>(null);
   const [sharing, setSharing] = useState(false);
 
   const handleShare = async () => {
-    if (!cardRef.current || sharing) return;
+    if (sharing) return;
     setSharing(true);
     try {
-      const html2canvas = (await import("html2canvas")).default;
-      const canvas = await html2canvas(cardRef.current, {
-        scale: 2,
-        useCORS: true,
-        backgroundColor: null,
-        logging: false,
+      const blob = await drawShareCard({
+        instaId: data.instaId,
+        overall: data.overall,
+        avg: data.avg,
+        count: data.count,
       });
-      canvas.toBlob(async (blob) => {
-        if (!blob) { setSharing(false); return; }
-        const file = new File([blob], "ex-rating.png", { type: "image/png" });
-        if (navigator.canShare?.({ files: [file] })) {
-          await navigator.share({ files: [file], title: `@${data.instaId} 통지표` });
-        } else {
-          const url = URL.createObjectURL(blob);
-          const a = document.createElement("a");
-          a.href = url; a.download = "ex-rating.png"; a.click();
-          URL.revokeObjectURL(url);
-        }
-        setSharing(false);
-      }, "image/png");
+      const file = new File([blob], "ex-rating.png", { type: "image/png" });
+      if (navigator.canShare?.({ files: [file] })) {
+        await navigator.share({ files: [file], title: `@${data.instaId} 통지표` });
+      } else {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "ex-rating.png";
+        a.click();
+        URL.revokeObjectURL(url);
+      }
     } catch {
       showToast("이미지 생성에 실패했어요 😢", "crying-face");
+    } finally {
       setSharing(false);
     }
   };
@@ -401,20 +398,6 @@ function Content({ data }: { data: ProfileResponse }) {
           </ul>
         )}
       </section>
-
-      {/* 캡처용 ShareCard — 화면 밖에 숨김 */}
-      <div
-        ref={cardRef}
-        style={{ position: "fixed", top: -9999, left: -9999, zIndex: -1 }}
-        aria-hidden
-      >
-        <ShareCard
-          instaId={data.instaId}
-          overall={data.overall}
-          avg={data.avg}
-          count={data.count}
-        />
-      </div>
 
       <div className="mt-12 space-y-3">
         <button
