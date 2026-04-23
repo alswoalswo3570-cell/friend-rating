@@ -136,7 +136,7 @@ export const strings = {
     ko: "내 인스타 아이디",
     en: "Your Instagram handle",
   },
-  "lookup.field.instaId.placeholder": { ko: "minjae_shin", en: "minjae_shin" },
+  "lookup.field.instaId.placeholder": { ko: "내 아이디", en: "your_handle" },
   "lookup.headline": {
     ko: "내 통지표 {highlight}",
     en: "{highlight} my report card",

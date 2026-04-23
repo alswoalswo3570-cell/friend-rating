@@ -268,7 +268,7 @@ function Content({ data }: { data: ProfileResponse }) {
             }}
           />
         </h1>
-        <p className="mt-3 flex items-center gap-1.5 text-sm text-ink/70">
+        <p className="mt-3 flex items-center gap-1.5 text-[14px] font-bold text-ink/80">
           <RichText
             k="dashboard.stats"
             vars={{
@@ -303,21 +303,25 @@ function Content({ data }: { data: ProfileResponse }) {
 
         <div className="dashed-rule my-4" />
 
-        <ul className="grid grid-cols-2 gap-x-3 gap-y-2.5 text-sm">
-          {axes.map((s) => (
-            <li
-              key={s.axis}
-              className="flex items-center justify-between rounded-2xl bg-cream px-3 py-2"
-            >
-              <span className="flex items-center gap-1.5 font-bold text-ink/80">
-                <Emoji name={scoreEmojiName(s.value)} size={18} />
-                {s.axis}
-              </span>
-              <span className="font-extrabold text-coral tabular-nums">
-                {s.value.toFixed(1)}
-              </span>
-            </li>
-          ))}
+        <ul className="grid grid-cols-2 gap-x-3 gap-y-2.5">
+          {axes.map((s) => {
+            const chipBg =
+              s.value >= 4 ? "bg-mint/50" : s.value >= 3 ? "bg-butter/60" : "bg-bubble/60";
+            return (
+              <li
+                key={s.axis}
+                className={`flex items-center justify-between rounded-2xl border-2 border-ink/8 px-3 py-2.5 ${chipBg}`}
+              >
+                <span className="flex items-center gap-1.5 text-[12px] font-bold text-ink/75">
+                  <Emoji name={scoreEmojiName(s.value)} size={17} />
+                  {s.axis}
+                </span>
+                <span className="text-[17px] font-extrabold text-ink tabular-nums">
+                  {s.value.toFixed(1)}
+                </span>
+              </li>
+            );
+          })}
         </ul>
       </section>
 
