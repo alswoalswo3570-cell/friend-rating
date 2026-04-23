@@ -1,17 +1,21 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import Emoji from "@/components/Emoji";
 import RichText, { tPlain } from "@/components/RichText";
 import { t } from "@/lib/strings";
+import { useLocale } from "@/lib/locale";
 
 export default function Landing() {
+  const locale = useLocale();
   return (
     <main className="relative pb-16">
       {/* 히어로 일러스트 */}
       <section className="relative aspect-[9/10] w-full overflow-hidden bg-gradient-to-b from-[#CFE7F5] via-[#F6DCE6] to-cream">
         <Image
           src="/landing-hero.png"
-          alt={tPlain("landing.hero.alt")}
+          alt={tPlain("landing.hero.alt", undefined, locale)}
           fill
           priority
           sizes="(max-width: 480px) 100vw, 480px"
@@ -22,7 +26,7 @@ export default function Landing() {
         <div className="absolute left-1/2 top-5 -translate-x-1/2">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1.5 text-[11px] font-extrabold tracking-[0.18em] text-ink shadow-poplg border-2 border-ink/10 backdrop-blur-sm">
             <Emoji name="sparkles" size={14} />
-            {t("common.badge.exrating")}
+            {t("common.badge.exrating", undefined, locale)}
             <Emoji name="strawberry" size={14} />
           </span>
         </div>
@@ -49,7 +53,7 @@ export default function Landing() {
               vars={{
                 highlight: (
                   <span className="relative text-coral">
-                    {t("landing.headline.highlight")}
+                    {t("landing.headline.highlight", undefined, locale)}
                     <span className="absolute -bottom-1 left-0 right-0 h-2 rounded-full bg-bubble/70 -z-10" />
                   </span>
                 ),
@@ -69,7 +73,7 @@ export default function Landing() {
             className="group relative block rounded-[24px] bg-gradient-to-br from-coral to-bubble p-5 border-2 border-ink/10 shadow-poplg active:translate-y-1 active:shadow-pop transition"
           >
             <span className="absolute -top-2 -right-2 rotate-6 rounded-full bg-butter px-2 py-0.5 text-[10px] font-extrabold text-ink border-2 border-ink/10 shadow-pop">
-              {t("landing.cta.host.sticker")}
+              {t("landing.cta.host.sticker", undefined, locale)}
             </span>
             <div className="flex items-center gap-4">
               <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white/90 border-2 border-ink/10 shadow-pop">
@@ -77,13 +81,13 @@ export default function Landing() {
               </div>
               <div className="min-w-0 flex-1">
                 <p className="text-[11px] font-extrabold tracking-widest text-white/70">
-                  {t("landing.cta.host.label")}
+                  {t("landing.cta.host.label", undefined, locale)}
                 </p>
                 <p className="mt-0.5 text-[18px] font-extrabold text-white leading-tight">
-                  {t("landing.cta.host.title")}
+                  {t("landing.cta.host.title", undefined, locale)}
                 </p>
                 <p className="mt-1 text-[12px] text-white/80 leading-snug">
-                  {t("landing.cta.host.sub")}
+                  {t("landing.cta.host.sub", undefined, locale)}
                 </p>
               </div>
               <span className="text-white/90 text-xl font-extrabold">→</span>
@@ -95,7 +99,7 @@ export default function Landing() {
             className="group relative block rounded-[24px] bg-white p-5 border-2 border-ink/10 shadow-poplg active:translate-y-1 active:shadow-pop transition"
           >
             <span className="absolute -top-2 -right-2 -rotate-6 rounded-full bg-mint px-2 py-0.5 text-[10px] font-extrabold text-ink border-2 border-ink/10 shadow-pop">
-              {t("landing.cta.guest.sticker")}
+              {t("landing.cta.guest.sticker", undefined, locale)}
             </span>
             <div className="flex items-center gap-4">
               <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-bubble/40 border-2 border-ink/10 shadow-pop">
@@ -103,13 +107,13 @@ export default function Landing() {
               </div>
               <div className="min-w-0 flex-1">
                 <p className="text-[11px] font-extrabold tracking-widest text-ink/40">
-                  {t("landing.cta.guest.label")}
+                  {t("landing.cta.guest.label", undefined, locale)}
                 </p>
                 <p className="mt-0.5 text-[18px] font-extrabold text-ink leading-tight">
-                  {t("landing.cta.guest.title")}
+                  {t("landing.cta.guest.title", undefined, locale)}
                 </p>
                 <p className="mt-1 text-[12px] text-ink/60 leading-snug">
-                  {t("landing.cta.guest.sub")}
+                  {t("landing.cta.guest.sub", undefined, locale)}
                 </p>
               </div>
               <span className="text-ink/40 text-xl font-extrabold">→</span>
@@ -141,7 +145,7 @@ export default function Landing() {
 
         <p className="mt-8 flex items-center justify-center gap-1 text-center text-[11px] text-ink/40">
           <Emoji name="custard" size={14} />
-          {t("common.preview.footer")}
+          {t("common.preview.footer", undefined, locale)}
         </p>
 
         <div className="mt-4 flex items-center justify-center gap-4 text-[11px] text-ink/35">

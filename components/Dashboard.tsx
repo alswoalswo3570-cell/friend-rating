@@ -8,6 +8,7 @@ import Emoji, { type EmojiName } from "@/components/Emoji";
 import RichText from "@/components/RichText";
 import { showToast } from "@/components/Toast";
 import { t } from "@/lib/strings";
+import { useLocale } from "@/lib/locale";
 import { drawShareCard } from "@/lib/drawShareCard";
 import AdFitBanner from "@/components/AdFitBanner";
 
@@ -61,6 +62,7 @@ type FetchState =
 
 export default function Dashboard() {
   const search = useSearchParams();
+  const locale = useLocale();
   const id = search.get("id") ?? "";
   const birth = search.get("b") ?? "";
 
@@ -94,7 +96,7 @@ export default function Dashboard() {
         if (e instanceof Error && e.name === "AbortError") return;
         setState({
           status: "error",
-          message: e instanceof Error ? e.message : t("common.error.unknown"),
+          message: e instanceof Error ? e.message : t("common.error.unknown", undefined, locale),
         });
       });
     return () => ctrl.abort();
@@ -107,11 +109,11 @@ export default function Dashboard() {
           href="/"
           className="inline-flex items-center gap-1 rounded-full bg-white/70 px-3 py-1.5 text-[12px] font-bold text-ink/70 border-2 border-ink/10 shadow-pop"
         >
-          {t("common.nav.home")}
+          {t("common.nav.home", undefined, locale)}
         </Link>
         <span className="inline-flex items-center gap-1.5 rounded-full bg-butter px-3 py-1 text-[11px] font-extrabold tracking-[0.15em] text-ink shadow-pop">
           <Emoji name="sparkles" size={14} />
-          {t("common.badge.exrating")}
+          {t("common.badge.exrating", undefined, locale)}
           <Emoji name="strawberry" size={14} />
         </span>
       </div>
@@ -126,26 +128,28 @@ export default function Dashboard() {
 }
 
 function MissingArgs() {
+  const locale = useLocale();
   return (
     <section className="rounded-[24px] bg-white border-2 border-ink/10 p-6 text-center shadow-pop">
       <Emoji name="locked" size={48} />
       <h2 className="mt-3 text-[18px] font-extrabold text-ink">
-        {t("dashboard.state.missing.title")}
+        {t("dashboard.state.missing.title", undefined, locale)}
       </h2>
       <p className="mt-2 text-[13px] leading-relaxed text-ink/60">
-        {t("dashboard.state.missing.sub")}
+        {t("dashboard.state.missing.sub", undefined, locale)}
       </p>
       <Link
         href="/"
         className="mt-5 inline-block rounded-full bg-coral px-5 py-3 text-[13px] font-extrabold text-white border-2 border-ink/10 shadow-pop"
       >
-        {t("dashboard.state.missing.cta")}
+        {t("dashboard.state.missing.cta", undefined, locale)}
       </Link>
     </section>
   );
 }
 
 function Loading() {
+  const locale = useLocale();
   return (
     <section className="relative rounded-[28px] bg-white border-2 border-ink/10 px-5 pt-6 pb-5 shadow-poplg">
       <span className="tape" aria-hidden />
@@ -166,24 +170,25 @@ function Loading() {
       </div>
       <p className="mt-5 flex items-center justify-center gap-1.5 text-center text-[12px] font-bold text-ink/45">
         <Emoji name="sparkles" size={14} />
-        {t("dashboard.state.loading")}
+        {t("dashboard.state.loading", undefined, locale)}
       </p>
     </section>
   );
 }
 
 function NotFound({ instaId }: { instaId: string }) {
+  const locale = useLocale();
   return (
     <section className="rounded-[24px] bg-white border-2 border-ink/10 p-6 text-center shadow-pop">
       <Emoji name="thinking-face" size={48} />
       <h2 className="mt-3 text-[18px] font-extrabold text-ink">
-        {t("dashboard.state.notfound.title")}
+        {t("dashboard.state.notfound.title", undefined, locale)}
       </h2>
       <p className="mt-2 text-[13px] leading-relaxed text-ink/60">
         {instaId ? (
           <RichText k="dashboard.state.notfound.body" vars={{ id: instaId }} />
         ) : (
-          t("dashboard.state.notfound.bodyNoId")
+          t("dashboard.state.notfound.bodyNoId", undefined, locale)
         )}
       </p>
       <div className="mt-5 space-y-2">
@@ -194,16 +199,16 @@ function NotFound({ instaId }: { instaId: string }) {
               const url = `${location.origin}/rate/${encodeURIComponent(instaId)}`;
               try {
                 await navigator.clipboard.writeText(url);
-                showToast(t("common.toast.link.copied"), "sparkles");
+                showToast(t("common.toast.link.copied", undefined, locale), "sparkles");
               } catch {
-                showToast(t("common.toast.link.copyFailed"), "crying-face");
+                showToast(t("common.toast.link.copyFailed", undefined, locale), "crying-face");
               }
             }}
             className="block w-full rounded-full bg-coral py-3 text-[13px] font-extrabold text-white border-2 border-ink/10 shadow-pop active:translate-y-0.5 transition"
           >
             <span className="inline-flex items-center gap-2">
               <Emoji name="link" size={16} />
-              {t("common.empty.cta.copyLink")}
+              {t("common.empty.cta.copyLink", undefined, locale)}
             </span>
           </button>
         )}
@@ -211,7 +216,7 @@ function NotFound({ instaId }: { instaId: string }) {
           href="/"
           className="block w-full rounded-full bg-white/80 py-3 text-[13px] font-bold text-ink/70 border-2 border-ink/10 active:translate-y-0.5 transition"
         >
-          {t("dashboard.state.notfound.cta.home")}
+          {t("dashboard.state.notfound.cta.home", undefined, locale)}
         </Link>
       </div>
     </section>
@@ -219,11 +224,12 @@ function NotFound({ instaId }: { instaId: string }) {
 }
 
 function ErrorBox({ message }: { message: string }) {
+  const locale = useLocale();
   return (
     <section className="rounded-[24px] bg-white border-2 border-ink/10 p-6 text-center shadow-pop">
       <Emoji name="crying-face" size={40} />
       <h2 className="mt-3 text-[16px] font-extrabold text-ink">
-        {t("dashboard.state.error.title")}
+        {t("dashboard.state.error.title", undefined, locale)}
       </h2>
       <p className="mt-2 text-[12px] text-ink/50 break-all">{message}</p>
     </section>
@@ -231,6 +237,7 @@ function ErrorBox({ message }: { message: string }) {
 }
 
 function Content({ data }: { data: ProfileResponse }) {
+  const locale = useLocale();
   const [sharing, setSharing] = useState(false);
 
   const handleShare = async () => {
@@ -245,18 +252,15 @@ function Content({ data }: { data: ProfileResponse }) {
       });
       const file = new File([blob], "ex-rating.png", { type: "image/png" });
 
-      // 공유 시트 시도 (iOS Safari 등)
       if (navigator.canShare?.({ files: [file] })) {
         try {
           await navigator.share({ files: [file], title: `@${data.instaId} 통지표` });
-          return; // 공유 성공
+          return;
         } catch (e) {
-          // 사용자가 취소한 경우 (AbortError) → 저장으로 대체
           if (e instanceof Error && e.name === "AbortError") return;
         }
       }
 
-      // 공유 불가 or 실패 → 이미지 저장 + 안내
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
@@ -272,11 +276,11 @@ function Content({ data }: { data: ProfileResponse }) {
   };
 
   const axes: ScoreAxis[] = [
-    { axis: t("dashboard.axis.looks"), value: data.avg.looks },
-    { axis: t("dashboard.axis.personality"), value: data.avg.personality },
-    { axis: t("dashboard.axis.love"), value: data.avg.love },
-    { axis: t("dashboard.axis.manner"), value: data.avg.manner },
-    { axis: t("dashboard.axis.reunion"), value: data.avg.reunion },
+    { axis: t("dashboard.axis.looks", undefined, locale), value: data.avg.looks },
+    { axis: t("dashboard.axis.personality", undefined, locale), value: data.avg.personality },
+    { axis: t("dashboard.axis.love", undefined, locale), value: data.avg.love },
+    { axis: t("dashboard.axis.manner", undefined, locale), value: data.avg.manner },
+    { axis: t("dashboard.axis.reunion", undefined, locale), value: data.avg.reunion },
   ];
 
   return (
@@ -303,7 +307,7 @@ function Content({ data }: { data: ProfileResponse }) {
               ),
               highlight: (
                 <span className="relative text-coral">
-                  {t("dashboard.title.highlight")}
+                  {t("dashboard.title.highlight", undefined, locale)}
                   <span className="absolute -bottom-1 left-0 right-0 h-2 rounded-full bg-bubble/70 -z-10" />
                 </span>
               ),
@@ -316,7 +320,7 @@ function Content({ data }: { data: ProfileResponse }) {
             vars={{
               countBold: (
                 <b className="font-extrabold text-coral">
-                  {t("dashboard.stats.count", { count: data.count })}
+                  {t("dashboard.stats.count", { count: data.count }, locale)}
                 </b>
               ),
               avgBold: (
@@ -337,7 +341,7 @@ function Content({ data }: { data: ProfileResponse }) {
           <span className="h-2.5 w-2.5 rounded-full bg-butter" />
           <span className="h-2.5 w-2.5 rounded-full bg-mint" />
           <span className="ml-auto text-[10px] font-bold tracking-wider text-ink/40">
-            {t("dashboard.card.label")}
+            {t("dashboard.card.label", undefined, locale)}
           </span>
         </div>
 
@@ -372,7 +376,7 @@ function Content({ data }: { data: ProfileResponse }) {
       <section className="mt-12">
         <h2 className="flex items-center gap-2 text-lg font-extrabold text-ink mb-5">
           <Emoji name="love-letter" size={22} />
-          {t("dashboard.comments.title")}
+          {t("dashboard.comments.title", undefined, locale)}
           <span className="ml-1 inline-flex h-5 min-w-[20px] items-center justify-center rounded-full bg-coral px-1.5 text-[11px] font-extrabold text-white">
             {data.comments.length}
           </span>
@@ -381,10 +385,10 @@ function Content({ data }: { data: ProfileResponse }) {
           <div className="rounded-2xl bg-white/70 border-2 border-ink/10 p-5 text-center">
             <Emoji name="love-letter" size={36} />
             <p className="mt-2 text-[13px] font-bold text-ink/70">
-              {t("dashboard.comments.empty.title")}
+              {t("dashboard.comments.empty.title", undefined, locale)}
             </p>
             <p className="mt-1 text-[11.5px] leading-relaxed text-ink/45">
-              {t("dashboard.comments.empty.sub")}
+              {t("dashboard.comments.empty.sub", undefined, locale)}
             </p>
           </div>
         ) : (
@@ -420,11 +424,11 @@ function Content({ data }: { data: ProfileResponse }) {
           className="group relative w-full rounded-full bg-coral py-4 text-[15px] font-extrabold text-white shadow-poplg border-2 border-ink/10 active:translate-y-1 active:shadow-pop transition disabled:opacity-60"
         >
           <span className="absolute -top-2 -right-2 rotate-12 rounded-full bg-butter px-2 py-0.5 text-[10px] font-extrabold text-ink border-2 border-ink/10 shadow-pop">
-            {t("dashboard.cta.share.sticker")}
+            {t("dashboard.cta.share.sticker", undefined, locale)}
           </span>
           <span className="inline-flex items-center gap-2">
             <Emoji name="camera-with-flash" size={20} />
-            {sharing ? "이미지 생성 중..." : t("dashboard.cta.share.label")}
+            {sharing ? "이미지 생성 중..." : t("dashboard.cta.share.label", undefined, locale)}
           </span>
         </button>
         <button
@@ -433,17 +437,17 @@ function Content({ data }: { data: ProfileResponse }) {
             const url = `${location.origin}/rate/${encodeURIComponent(data.instaId)}`;
             try {
               await navigator.clipboard.writeText(url);
-              showToast(t("common.toast.link.copied"), "sparkles");
+              showToast(t("common.toast.link.copied", undefined, locale), "sparkles");
             } catch {
               showToast(
-                t("common.toast.link.copyFailedLong"),
+                t("common.toast.link.copyFailedLong", undefined, locale),
                 "crying-face",
               );
             }
           }}
           className="w-full rounded-full bg-white/80 py-3 text-[13px] font-bold text-ink/70 border-2 border-ink/10 active:translate-y-0.5 transition"
         >
-          {t("dashboard.cta.copy")}
+          {t("dashboard.cta.copy", undefined, locale)}
         </button>
       </div>
     </>

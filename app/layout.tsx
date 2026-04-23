@@ -3,6 +3,7 @@ import Script from "next/script";
 import "./globals.css";
 import ToastHost from "@/components/Toast";
 import { strings } from "@/lib/strings";
+import { LocaleProvider } from "@/lib/locale";
 
 const GA_ID = "G-DH81CG7141";
 
@@ -41,7 +42,9 @@ export default function RootLayout({
         />
       </head>
       <body className="font-sans">
-        <div className="mobile-shell">{children}</div>
+        <LocaleProvider>
+          <div className="mobile-shell">{children}</div>
+        </LocaleProvider>
         <ToastHost />
         <Script
           src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}

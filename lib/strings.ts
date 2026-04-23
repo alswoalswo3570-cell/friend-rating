@@ -396,7 +396,7 @@ export const strings = {
     notes:
       "{idChip} = @아이디 (흰 배경 pill로 렌더). {highlight} = 귀염뽀짝 (coral 형광펜)",
   },
-  "dashboard.title.highlight": { ko: "귀염뽀짝", en: "cutesy-ass" },
+  "dashboard.title.highlight": { ko: "귀염뽀짝", en: "cute lil'" },
 } as const satisfies Record<string, StringEntry>;
 
 export type StringKey = keyof typeof strings;

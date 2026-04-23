@@ -1,5 +1,8 @@
+"use client";
+
 import React from "react";
 import { strings, type StringKey, type Locale } from "@/lib/strings";
+import { useLocale } from "@/lib/locale";
 
 type Vars = Record<string, React.ReactNode>;
 
@@ -50,13 +53,15 @@ export default function RichText({
   k,
   vars,
   boldClassName = "font-extrabold text-ink",
-  locale = "ko",
+  locale: localeProp,
 }: {
   k: StringKey;
   vars?: Vars;
   boldClassName?: string;
   locale?: Locale;
 }) {
+  const ctxLocale = useLocale();
+  const locale = localeProp ?? ctxLocale;
   const entry = strings[k];
   const tpl = entry[locale] || entry.ko;
   return <>{tokenize(tpl, vars, boldClassName)}</>;

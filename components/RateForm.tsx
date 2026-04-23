@@ -5,6 +5,7 @@ import { useState } from "react";
 import Emoji, { type EmojiName } from "@/components/Emoji";
 import RichText from "@/components/RichText";
 import { t, type StringKey } from "@/lib/strings";
+import { useLocale } from "@/lib/locale";
 
 type AxisKey = "looks" | "personality" | "love" | "manner" | "reunion";
 
@@ -46,6 +47,7 @@ type Props = {
 };
 
 export default function RateForm({ instaId, birth }: Props) {
+  const locale = useLocale();
   const [scores, setScores] = useState<Scores>(initialScores);
   const [comment, setComment] = useState("");
   const [submitted, setSubmitted] = useState(false);
@@ -77,7 +79,7 @@ export default function RateForm({ instaId, birth }: Props) {
         }),
       });
       if (res.status === 429) {
-        setErr(t("rateForm.error.rateLimit"));
+        setErr(t("rateForm.error.rateLimit", undefined, locale));
         return;
       }
       if (!res.ok) {
@@ -88,7 +90,7 @@ export default function RateForm({ instaId, birth }: Props) {
           t("rateForm.error.submitFailed", {
             err:
               typeof body.error === "string" ? body.error : String(res.status),
-          }),
+          }, locale),
         );
         return;
       }
@@ -97,7 +99,7 @@ export default function RateForm({ instaId, birth }: Props) {
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
     } catch (e) {
-      setErr(e instanceof Error ? e.message : t("common.error.network"));
+      setErr(e instanceof Error ? e.message : t("common.error.network", undefined, locale));
     } finally {
       setLoading(false);
     }
@@ -114,11 +116,11 @@ export default function RateForm({ instaId, birth }: Props) {
           href={`/rate/${encodeURIComponent(instaId)}`}
           className="inline-flex items-center gap-1 rounded-full bg-white/70 px-3 py-1.5 text-[12px] font-bold text-ink/70 border-2 border-ink/10 shadow-pop"
         >
-          {t("common.nav.back")}
+          {t("common.nav.back", undefined, locale)}
         </Link>
         <span className="inline-flex items-center gap-1.5 rounded-full bg-butter px-3 py-1 text-[11px] font-extrabold tracking-[0.15em] text-ink shadow-pop">
           <Emoji name="love-letter" size={14} />
-          {t("rateForm.nav.badge")}
+          {t("rateForm.nav.badge", undefined, locale)}
         </span>
       </div>
 
@@ -129,7 +131,7 @@ export default function RateForm({ instaId, birth }: Props) {
         </div>
         <div className="flex-1 min-w-0">
           <p className="text-[11px] font-extrabold text-ink/40">
-            {t("rateForm.target.label")}
+            {t("rateForm.target.label", undefined, locale)}
           </p>
           <p className="truncate text-[15px] font-extrabold text-ink">@{instaId}</p>
         </div>
@@ -151,10 +153,10 @@ export default function RateForm({ instaId, birth }: Props) {
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <h3 className="text-[15px] font-extrabold text-ink leading-tight">
-                    {t(keys.label)}
+                    {t(keys.label, undefined, locale)}
                   </h3>
                   <p className="text-[11.5px] text-ink/50 mt-0.5">
-                    {t(keys.sub)}
+                    {t(keys.sub, undefined, locale)}
                   </p>
                 </div>
                 <div className="flex items-center gap-1.5 rounded-full bg-cream px-2.5 py-1">
@@ -176,12 +178,12 @@ export default function RateForm({ instaId, birth }: Props) {
                 }
                 className="cute-slider mt-4"
                 style={{ ["--fill" as string]: `${fill}%` }}
-                aria-label={t(keys.label)}
+                aria-label={t(keys.label, undefined, locale)}
               />
 
               <div className="mt-1.5 flex justify-between text-[10.5px] font-bold text-ink/40">
-                <span>{t(keys.low)}</span>
-                <span>{t(keys.high)}</span>
+                <span>{t(keys.low, undefined, locale)}</span>
+                <span>{t(keys.high, undefined, locale)}</span>
               </div>
             </section>
           );
@@ -193,23 +195,23 @@ export default function RateForm({ instaId, birth }: Props) {
             <div className="flex items-center gap-2">
               <Emoji name="love-letter" size={20} />
               <h3 className="text-[15px] font-extrabold text-ink">
-                {t("rateForm.comment.title")}
+                {t("rateForm.comment.title", undefined, locale)}
               </h3>
             </div>
             <span className="text-[11px] font-bold text-ink/40 tabular-nums">
               {t("rateForm.comment.counter", {
                 len: comment.length,
                 max: MAX_COMMENT,
-              })}
+              }, locale)}
             </span>
           </div>
           <p className="mt-0.5 text-[11.5px] text-ink/50">
-            {t("rateForm.comment.sub")}
+            {t("rateForm.comment.sub", undefined, locale)}
           </p>
           <textarea
             value={comment}
             onChange={(e) => setComment(e.target.value.slice(0, MAX_COMMENT))}
-            placeholder={t("rateForm.comment.placeholder")}
+            placeholder={t("rateForm.comment.placeholder", undefined, locale)}
             rows={4}
             className="mt-3 w-full rounded-2xl border-2 border-ink/10 bg-cream px-3.5 py-3 text-[13.5px] leading-relaxed text-ink placeholder:text-ink/30 outline-none focus:border-coral/70 focus:bg-white transition resize-none"
           />
@@ -217,11 +219,11 @@ export default function RateForm({ instaId, birth }: Props) {
 
         {/* 평균 미리보기 */}
         <div className="flex items-center justify-between rounded-full bg-white/70 border-2 border-ink/10 px-4 py-2.5 text-[13px] font-bold text-ink/70 shadow-pop">
-          <span>{t("rateForm.avgPreview.label")}</span>
+          <span>{t("rateForm.avgPreview.label", undefined, locale)}</span>
           <span className="flex items-center gap-1.5 font-extrabold text-ink">
             <Emoji name={scoreEmojiName(Number(avg))} size={18} />
             <span className="tabular-nums">{avg}</span>
-            <span className="text-ink/40">{t("rateForm.avgPreview.unit")}</span>
+            <span className="text-ink/40">{t("rateForm.avgPreview.unit", undefined, locale)}</span>
           </span>
         </div>
 
@@ -239,12 +241,12 @@ export default function RateForm({ instaId, birth }: Props) {
           <span className="inline-flex items-center gap-2">
             <Emoji name="sparkling-heart" size={18} />
             {loading
-              ? t("rateForm.submit.loading")
-              : t("rateForm.submit.idle")}
+              ? t("rateForm.submit.loading", undefined, locale)
+              : t("rateForm.submit.idle", undefined, locale)}
           </span>
         </button>
         <p className="text-center text-[11px] text-ink/40">
-          {t("rateForm.submit.warning")}
+          {t("rateForm.submit.warning", undefined, locale)}
         </p>
       </form>
     </main>
@@ -260,6 +262,7 @@ function Success({
   birth: string;
   avg: string;
 }) {
+  const locale = useLocale();
   return (
     <main className="relative px-5 pt-10 pb-16 text-center">
       <span className="deco" style={{ top: 16, right: 26, ["--r" as string]: "-14deg" }}>
@@ -275,12 +278,12 @@ function Success({
       <div className="relative mx-auto mt-6 w-fit rounded-full bg-white border-2 border-ink/10 p-5 shadow-poplg">
         <Emoji name="love-letter" size={64} />
         <span className="absolute -top-2 -right-3 rotate-12 rounded-full bg-butter px-2 py-0.5 text-[11px] font-extrabold text-ink border-2 border-ink/10 shadow-pop">
-          {t("rateForm.success.sticker")}
+          {t("rateForm.success.sticker", undefined, locale)}
         </span>
       </div>
 
       <h1 className="mt-6 text-[26px] font-extrabold leading-tight text-ink">
-        {t("rateForm.success.title")}{" "}
+        {t("rateForm.success.title", undefined, locale)}{" "}
         <span className="inline-block">
           <Emoji name="sparkles" size={24} />
         </span>
@@ -292,13 +295,13 @@ function Success({
             id: instaId,
             avgBold: (
               <b className="font-extrabold text-coral tabular-nums">
-                {t("rateForm.success.msg.avg", { avg })}
+                {t("rateForm.success.msg.avg", { avg }, locale)}
               </b>
             ),
           }}
         />
         <br />
-        {t("rateForm.success.shushing")}{" "}
+        {t("rateForm.success.shushing", undefined, locale)}{" "}
         <span className="inline-block align-middle">
           <Emoji name="shushing-face" size={16} />
         </span>
@@ -311,20 +314,20 @@ function Success({
         >
           <span className="inline-flex items-center gap-2">
             <Emoji name="glowing-star" size={18} />
-            {t("rateForm.success.cta.view", { id: instaId })}
+            {t("rateForm.success.cta.view", { id: instaId }, locale)}
           </span>
         </Link>
         <Link
           href="/"
           className="block w-full rounded-full bg-white/80 py-3 text-center text-[13px] font-bold text-ink/70 border-2 border-ink/10 active:translate-y-0.5 transition"
         >
-          {t("rateForm.success.cta.home")}
+          {t("rateForm.success.cta.home", undefined, locale)}
         </Link>
       </div>
 
       <p className="mt-8 flex items-center justify-center gap-1 text-[11px] text-ink/40">
         <Emoji name="custard" size={14} />
-        {t("rateForm.success.footer")}
+        {t("rateForm.success.footer", undefined, locale)}
       </p>
     </main>
   );

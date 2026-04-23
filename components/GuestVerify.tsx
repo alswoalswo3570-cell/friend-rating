@@ -6,6 +6,7 @@ import { useState } from "react";
 import Emoji from "@/components/Emoji";
 import RichText from "@/components/RichText";
 import { t } from "@/lib/strings";
+import { useLocale } from "@/lib/locale";
 
 type Props = {
   instaId: string;
@@ -13,6 +14,7 @@ type Props = {
 
 export default function GuestVerify({ instaId }: Props) {
   const router = useRouter();
+  const locale = useLocale();
   const [birth, setBirth] = useState("");
   const [showHint, setShowHint] = useState(false);
   const canSubmit = /^\d{6}$/.test(birth);
@@ -30,11 +32,11 @@ export default function GuestVerify({ instaId }: Props) {
           href="/"
           className="inline-flex items-center gap-1 rounded-full bg-white/70 px-3 py-1.5 text-[12px] font-bold text-ink/70 border-2 border-ink/10 shadow-pop"
         >
-          {t("common.nav.home")}
+          {t("common.nav.home", undefined, locale)}
         </Link>
         <span className="inline-flex items-center gap-1.5 rounded-full bg-butter px-3 py-1 text-[11px] font-extrabold tracking-[0.15em] text-ink shadow-pop">
           <Emoji name="love-letter" size={14} />
-          {t("verify.nav.badge")}
+          {t("verify.nav.badge", undefined, locale)}
         </span>
       </div>
 
@@ -49,18 +51,18 @@ export default function GuestVerify({ instaId }: Props) {
         <span className="tape" aria-hidden />
 
         <p className="text-center text-[12px] font-extrabold tracking-widest text-ink/40">
-          {t("verify.card.label")}
+          {t("verify.card.label", undefined, locale)}
         </p>
 
         <div className="mt-3 flex flex-col items-center gap-2">
           <div className="relative flex h-20 w-20 items-center justify-center rounded-full bg-bubble/50 border-2 border-ink/10 shadow-pop">
             <Emoji name="face-with-peeking-eye" size={48} />
             <span className="absolute -bottom-1 -right-1 rotate-12 rounded-full bg-butter px-1.5 py-0.5 text-[10px] font-extrabold text-ink border-2 border-ink/10 shadow-pop">
-              {t("verify.card.sticker")}
+              {t("verify.card.sticker", undefined, locale)}
             </span>
           </div>
           <p className="mt-1 text-[13px] text-ink/60">
-            {t("verify.card.question")}
+            {t("verify.card.question", undefined, locale)}
           </p>
           <h1 className="text-[24px] font-extrabold leading-tight tracking-tight text-ink">
             @{instaId}
@@ -69,9 +71,9 @@ export default function GuestVerify({ instaId }: Props) {
 
         <form onSubmit={submit} className="mt-6">
           <label className="block text-center text-[12px] font-extrabold text-ink/80">
-            {t("verify.field.birth.label")}{" "}
+            {t("verify.field.birth.label", undefined, locale)}{" "}
             <span className="font-bold text-ink/40">
-              {t("verify.field.birth.hint", { id: instaId })}
+              {t("verify.field.birth.hint", { id: instaId }, locale)}
             </span>
           </label>
           <input
@@ -92,8 +94,8 @@ export default function GuestVerify({ instaId }: Props) {
             className="mt-2 block w-full text-[11.5px] font-bold text-ink/50 underline decoration-dotted underline-offset-4"
           >
             {showHint
-              ? t("verify.hint.toggle.open")
-              : t("verify.hint.toggle.closed")}
+              ? t("verify.hint.toggle.open", undefined, locale)
+              : t("verify.hint.toggle.closed", undefined, locale)}
           </button>
 
           {showHint && (
@@ -107,7 +109,7 @@ export default function GuestVerify({ instaId }: Props) {
                   vars={{
                     separated: (
                       <b className="font-extrabold text-coral">
-                        {t("verify.hint.2.separated")}
+                        {t("verify.hint.2.separated", undefined, locale)}
                       </b>
                     ),
                   }}
@@ -126,7 +128,7 @@ export default function GuestVerify({ instaId }: Props) {
           >
             <span className="inline-flex items-center gap-2">
               <Emoji name="love-letter" size={18} />
-              {t("verify.submit")}
+              {t("verify.submit", undefined, locale)}
             </span>
           </button>
         </form>
@@ -134,7 +136,7 @@ export default function GuestVerify({ instaId }: Props) {
 
       <p className="mt-6 flex items-center justify-center gap-1 text-center text-[11px] text-ink/40">
         <Emoji name="custard" size={14} />
-        {t("verify.footer")}
+        {t("verify.footer", undefined, locale)}
       </p>
     </main>
   );

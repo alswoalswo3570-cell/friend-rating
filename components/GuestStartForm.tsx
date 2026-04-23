@@ -6,9 +6,11 @@ import { useState } from "react";
 import Emoji from "@/components/Emoji";
 import RichText from "@/components/RichText";
 import { t } from "@/lib/strings";
+import { useLocale } from "@/lib/locale";
 
 export default function GuestStartForm() {
   const router = useRouter();
+  const locale = useLocale();
   const [instaId, setInstaId] = useState("");
 
   const idClean = instaId.replace(/^@/, "").trim();
@@ -27,11 +29,11 @@ export default function GuestStartForm() {
           href="/"
           className="inline-flex items-center gap-1 rounded-full bg-white/70 px-3 py-1.5 text-[12px] font-bold text-ink/70 border-2 border-ink/10 shadow-pop"
         >
-          {t("common.nav.home")}
+          {t("common.nav.home", undefined, locale)}
         </Link>
         <span className="inline-flex items-center gap-1.5 rounded-full bg-butter px-3 py-1 text-[11px] font-extrabold tracking-[0.15em] text-ink shadow-pop">
           <Emoji name="love-letter" size={14} />
-          {t("rateStart.nav.badge")}
+          {t("rateStart.nav.badge", undefined, locale)}
         </span>
       </div>
 
@@ -49,7 +51,7 @@ export default function GuestStartForm() {
             vars={{
               highlight: (
                 <span className="relative text-coral">
-                  {t("rateStart.headline.highlight")}
+                  {t("rateStart.headline.highlight", undefined, locale)}
                   <span className="absolute -bottom-1 left-0 right-0 h-2 rounded-full bg-bubble/70 -z-10" />
                 </span>
               ),
@@ -66,7 +68,7 @@ export default function GuestStartForm() {
         className="rounded-[28px] bg-white border-2 border-ink/10 p-5 shadow-poplg"
       >
         <label className="block text-[12px] font-extrabold text-ink/80">
-          {t("rateStart.field.instaId.label")}
+          {t("rateStart.field.instaId.label", undefined, locale)}
         </label>
         <div className="mt-1.5 flex items-center gap-2 rounded-2xl border-2 border-ink/10 bg-cream focus-within:border-coral/70 focus-within:bg-white transition">
           <span className="pl-4 text-ink/40 font-bold">@</span>
@@ -77,13 +79,13 @@ export default function GuestStartForm() {
             spellCheck={false}
             value={instaId}
             onChange={(e) => setInstaId(e.target.value)}
-            placeholder={t("rateStart.field.instaId.placeholder")}
+            placeholder={t("rateStart.field.instaId.placeholder", undefined, locale)}
             autoFocus
             className="flex-1 bg-transparent py-3 pr-4 text-[15px] font-bold text-ink placeholder:text-ink/30 outline-none"
           />
         </div>
         <p className="mt-1.5 text-[11px] text-ink/45">
-          {t("rateStart.field.instaId.hint")}
+          {t("rateStart.field.instaId.hint", undefined, locale)}
         </p>
 
         <button
@@ -93,7 +95,7 @@ export default function GuestStartForm() {
         >
           <span className="inline-flex items-center gap-2">
             <Emoji name="love-letter" size={18} />
-            {t("rateStart.submit")}
+            {t("rateStart.submit", undefined, locale)}
           </span>
         </button>
       </form>

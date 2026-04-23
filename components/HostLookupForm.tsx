@@ -7,9 +7,11 @@ import Emoji from "@/components/Emoji";
 import RichText from "@/components/RichText";
 import { showToast } from "@/components/Toast";
 import { t } from "@/lib/strings";
+import { useLocale } from "@/lib/locale";
 
 export default function HostLookupForm() {
   const router = useRouter();
+  const locale = useLocale();
   const [instaId, setInstaId] = useState("");
   const [birth, setBirth] = useState("");
   const [loading, setLoading] = useState(false);
@@ -38,14 +40,14 @@ export default function HostLookupForm() {
       }
       if (!res.ok) {
         const txt = await res.text().catch(() => "");
-        setErr(t("lookup.error.queryFailed", { msg: txt || String(res.status) }));
+        setErr(t("lookup.error.queryFailed", { msg: txt || String(res.status) }, locale));
         return;
       }
       router.push(
         `/dashboard?id=${encodeURIComponent(idClean)}&b=${encodeURIComponent(birth)}`,
       );
     } catch (e) {
-      setErr(e instanceof Error ? e.message : t("common.error.network"));
+      setErr(e instanceof Error ? e.message : t("common.error.network", undefined, locale));
     } finally {
       setLoading(false);
     }
@@ -58,11 +60,11 @@ export default function HostLookupForm() {
           href="/"
           className="inline-flex items-center gap-1 rounded-full bg-white/70 px-3 py-1.5 text-[12px] font-bold text-ink/70 border-2 border-ink/10 shadow-pop"
         >
-          {t("common.nav.home")}
+          {t("common.nav.home", undefined, locale)}
         </Link>
         <span className="inline-flex items-center gap-1.5 rounded-full bg-butter px-3 py-1 text-[11px] font-extrabold tracking-[0.15em] text-ink shadow-pop">
           <Emoji name="glowing-star" size={14} />
-          {t("lookup.nav.badge")}
+          {t("lookup.nav.badge", undefined, locale)}
         </span>
       </div>
 
@@ -80,7 +82,7 @@ export default function HostLookupForm() {
             vars={{
               highlight: (
                 <span className="relative text-coral">
-                  {t("lookup.headline.highlight")}
+                  {t("lookup.headline.highlight", undefined, locale)}
                   <span className="absolute -bottom-1 left-0 right-0 h-2 rounded-full bg-bubble/70 -z-10" />
                 </span>
               ),
@@ -97,7 +99,7 @@ export default function HostLookupForm() {
         className="rounded-[28px] bg-white border-2 border-ink/10 p-5 shadow-poplg"
       >
         <label className="block text-[12px] font-extrabold text-ink/80">
-          {t("lookup.field.instaId.label")}
+          {t("lookup.field.instaId.label", undefined, locale)}
         </label>
         <div className="mt-1.5 flex items-center gap-2 rounded-2xl border-2 border-ink/10 bg-cream focus-within:border-coral/70 focus-within:bg-white transition">
           <span className="pl-4 text-ink/40 font-bold">@</span>
@@ -108,15 +110,15 @@ export default function HostLookupForm() {
             spellCheck={false}
             value={instaId}
             onChange={(e) => setInstaId(e.target.value)}
-            placeholder={t("lookup.field.instaId.placeholder")}
+            placeholder={t("lookup.field.instaId.placeholder", undefined, locale)}
             className="flex-1 bg-transparent py-3 pr-4 text-[15px] font-bold text-ink placeholder:text-ink/30 outline-none"
           />
         </div>
 
         <label className="mt-4 block text-[12px] font-extrabold text-ink/80">
-          {t("lookup.field.birth.label")}{" "}
+          {t("lookup.field.birth.label", undefined, locale)}{" "}
           <span className="font-bold text-ink/40">
-            {t("lookup.field.birth.hint")}
+            {t("lookup.field.birth.hint", undefined, locale)}
           </span>
         </label>
         <input
@@ -126,11 +128,11 @@ export default function HostLookupForm() {
           maxLength={6}
           value={birth}
           onChange={(e) => setBirth(e.target.value.replace(/\D/g, ""))}
-          placeholder={t("lookup.field.birth.placeholder")}
+          placeholder={t("lookup.field.birth.placeholder", undefined, locale)}
           className="mt-1.5 w-full rounded-2xl border-2 border-ink/10 bg-cream px-4 py-3 text-center text-[22px] font-extrabold tracking-[0.4em] text-ink placeholder:text-ink/20 outline-none focus:border-coral/70 focus:bg-white transition tabular-nums"
         />
         <p className="mt-1.5 text-[11px] text-ink/45">
-          {t("lookup.field.birth.footer")}
+          {t("lookup.field.birth.footer", undefined, locale)}
         </p>
 
         {err && (
@@ -143,7 +145,7 @@ export default function HostLookupForm() {
           <div className="mt-4 rounded-2xl bg-cream border-2 border-ink/10 p-3.5">
             <p className="flex items-center gap-1.5 text-[13px] font-extrabold text-ink">
               <Emoji name="thinking-face" size={18} />
-              {t("common.empty.title")}
+              {t("common.empty.title", undefined, locale)}
             </p>
             <p className="mt-1.5 text-[12px] leading-relaxed text-ink/60">
               <RichText k="common.empty.body" vars={{ id: emptyTarget }} />
@@ -154,18 +156,18 @@ export default function HostLookupForm() {
                 const url = `${location.origin}/rate/${encodeURIComponent(emptyTarget)}`;
                 try {
                   await navigator.clipboard.writeText(url);
-                  showToast(t("common.toast.link.copied"), "sparkles");
+                  showToast(t("common.toast.link.copied", undefined, locale), "sparkles");
                 } catch {
-                  showToast(t("common.toast.link.copyFailed"), "crying-face");
+                  showToast(t("common.toast.link.copyFailed", undefined, locale), "crying-face");
                 }
               }}
               className="mt-3 flex w-full items-center justify-center gap-2 rounded-full bg-coral/90 py-2.5 text-[12.5px] font-extrabold text-white border-2 border-ink/10 shadow-pop active:translate-y-0.5 transition"
             >
               <Emoji name="link" size={16} />
-              {t("common.empty.cta.copyLink")}
+              {t("common.empty.cta.copyLink", undefined, locale)}
             </button>
             <p className="mt-2 text-center text-[10.5px] text-ink/45">
-              {t("common.empty.footer.onePublic")}
+              {t("common.empty.footer.onePublic", undefined, locale)}
             </p>
           </div>
         )}
@@ -177,7 +179,7 @@ export default function HostLookupForm() {
         >
           <span className="inline-flex items-center gap-2">
             <Emoji name="glowing-star" size={18} />
-            {loading ? t("lookup.submit.loading") : t("lookup.submit.idle")}
+            {loading ? t("lookup.submit.loading", undefined, locale) : t("lookup.submit.idle", undefined, locale)}
           </span>
         </button>
       </form>
