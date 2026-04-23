@@ -2,20 +2,18 @@
 
 import { useEffect, useRef } from "react";
 
-const CLIENT_ID = process.env.NEXT_PUBLIC_ADFIT_CLIENT_ID ?? "";
+const CLIENT_ID = "DAN-XYTYSzDJJGamhNbU";
 
 export default function AdFitBanner() {
   const ins = useRef<HTMLModElement>(null);
 
   useEffect(() => {
-    if (!CLIENT_ID || !ins.current) return;
+    if (!ins.current) return;
     try {
       // @ts-expect-error kakao adfit global
       (window.adfit = window.adfit || []).push({});
     } catch {}
   }, []);
-
-  if (!CLIENT_ID) return null;
 
   return (
     <div className="flex justify-center py-3">
