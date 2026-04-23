@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { PrismaLibSQL } from "@prisma/adapter-libsql";
+import { createClient } from "@libsql/client";
 
 const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
 
@@ -13,15 +14,9 @@ function makePrismaClient(): PrismaClient {
       : (["error"] as const);
 
   if (tursoUrl) {
-    // 프로덕션 / Turso 연결 (Vercel serverless)
-    const adapter = new PrismaLibSQL({
-      url: tursoUrl,
-      authToken: tursoToken,
-    });
-    return new PrismaClient({
-      adapter,
-      log: [...logLevels],
-    });
+    const libsql = createClient({ url: tursoUrl, authToken: tursoToken });
+    const adapter = new PrismaLibSQL(libsql);
+    return new PrismaClient({ adapter, log: [...logLevels] });
   }
 
   // 로컬 개발 fallback (prisma/dev.db)
