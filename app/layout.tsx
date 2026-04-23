@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import "./globals.css";
 import ToastHost from "@/components/Toast";
 import { strings } from "@/lib/strings";
@@ -33,6 +34,20 @@ export default function RootLayout({
       <body className="font-sans">
         <div className="mobile-shell">{children}</div>
         <ToastHost />
+        {/* Google AdSense */}
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8066414354831218"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
+        {/* Kakao AdFit */}
+        {process.env.NEXT_PUBLIC_ADFIT_CLIENT_ID && (
+          <Script
+            src="//t1.daumcdn.net/kas/static/ba.min.js"
+            strategy="afterInteractive"
+          />
+        )}
       </body>
     </html>
   );

@@ -9,6 +9,7 @@ import RichText from "@/components/RichText";
 import { showToast } from "@/components/Toast";
 import { t } from "@/lib/strings";
 import { drawShareCard } from "@/lib/drawShareCard";
+import AdFitBanner from "@/components/AdFitBanner";
 
 const scoreEmojiName = (v: number): EmojiName =>
   v >= 4.5
@@ -355,6 +356,8 @@ function Content({ data }: { data: ProfileResponse }) {
           })}
         </ul>
       </section>
+
+      <AdFitBanner />
 
       <section className="mt-12">
         <h2 className="flex items-center gap-2 text-lg font-extrabold text-ink mb-5">
