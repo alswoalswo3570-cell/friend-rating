@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import Script from "next/script";
 import "./globals.css";
 import ToastHost from "@/components/Toast";
 import { strings } from "@/lib/strings";
@@ -30,24 +29,17 @@ export default function RootLayout({
           crossOrigin="anonymous"
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
         />
+        {/* Google AdSense — head에 위치해야 크롤러가 인식 */}
+        {/* eslint-disable-next-line @next/next/no-sync-scripts */}
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8066414354831218"
+          crossOrigin="anonymous"
+        />
       </head>
       <body className="font-sans">
         <div className="mobile-shell">{children}</div>
         <ToastHost />
-        {/* Google AdSense */}
-        <Script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8066414354831218"
-          crossOrigin="anonymous"
-          strategy="afterInteractive"
-        />
-        {/* Kakao AdFit */}
-        {process.env.NEXT_PUBLIC_ADFIT_CLIENT_ID && (
-          <Script
-            src="//t1.daumcdn.net/kas/static/ba.min.js"
-            strategy="afterInteractive"
-          />
-        )}
       </body>
     </html>
   );
