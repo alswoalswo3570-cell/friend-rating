@@ -4,6 +4,15 @@ export const metadata = {
   title: "개인정보처리방침 — EX-RATING",
 };
 
+function Bullet({ children }: { children: React.ReactNode }) {
+  return (
+    <li className="flex gap-2 items-start">
+      <span className="text-coral font-bold shrink-0 mt-0.5">·</span>
+      <span>{children}</span>
+    </li>
+  );
+}
+
 export default function PrivacyPage() {
   return (
     <main className="px-5 pt-6 pb-16">
@@ -23,21 +32,21 @@ export default function PrivacyPage() {
 
         <section className="rounded-[20px] bg-white/70 border-2 border-ink/10 p-5">
           <h2 className="font-extrabold text-[15px] text-ink mb-3">1. 수집하는 정보</h2>
-          <p className="mb-2">EX-RATING(이하 "서비스")은 다음 정보를 수집합니다.</p>
-          <ul className="space-y-1.5 list-none">
-            <li className="flex gap-2"><span className="text-coral font-bold shrink-0">·</span>인스타그램 아이디 (평가 대상 식별용)</li>
-            <li className="flex gap-2"><span className="text-coral font-bold shrink-0">·</span>생년월일 6자리 — <b>단방향 암호화(SHA-256 해시)하여 저장</b>, 원문은 보관하지 않음</li>
-            <li className="flex gap-2"><span className="text-coral font-bold shrink-0">·</span>평가 점수 및 코멘트</li>
-            <li className="flex gap-2"><span className="text-coral font-bold shrink-0">·</span>접속 IP 주소 (중복 평가 방지용, 로그에 한시 보관)</li>
+          <p className="mb-2">EX-RATING(이하 &ldquo;서비스&rdquo;)은 다음 정보를 수집합니다.</p>
+          <ul className="space-y-1.5">
+            <Bullet>인스타그램 아이디 (평가 대상 식별용)</Bullet>
+            <Bullet>생년월일 6자리 — <b>단방향 암호화(SHA-256 해시)하여 저장</b>, 원문은 보관하지 않음</Bullet>
+            <Bullet>평가 점수 및 코멘트</Bullet>
+            <Bullet>접속 IP 주소 (중복 평가 방지용, 로그에 한시 보관)</Bullet>
           </ul>
         </section>
 
         <section className="rounded-[20px] bg-white/70 border-2 border-ink/10 p-5">
           <h2 className="font-extrabold text-[15px] text-ink mb-3">2. 수집 목적</h2>
           <ul className="space-y-1.5">
-            <li className="flex gap-2"><span className="text-coral font-bold shrink-0">·</span>서비스 제공 및 평가 결과 표시</li>
-            <li className="flex gap-2"><span className="text-coral font-bold shrink-0">·</span>단기간 내 중복 평가 방지</li>
-            <li className="flex gap-2"><span className="text-coral font-bold shrink-0">·</span>어뷰징 및 부정 이용 차단</li>
+            <Bullet>서비스 제공 및 평가 결과 표시</Bullet>
+            <Bullet>단기간 내 중복 평가 방지</Bullet>
+            <Bullet>어뷰징 및 부정 이용 차단</Bullet>
           </ul>
         </section>
 
@@ -55,9 +64,9 @@ export default function PrivacyPage() {
           <h2 className="font-extrabold text-[15px] text-ink mb-3">5. 정보주체의 권리</h2>
           <p className="mb-2">이용자는 언제든지 다음을 요청할 수 있습니다.</p>
           <ul className="space-y-1.5">
-            <li className="flex gap-2"><span className="text-coral font-bold shrink-0">·</span>본인 관련 데이터 열람</li>
-            <li className="flex gap-2"><span className="text-coral font-bold shrink-0">·</span>본인 관련 데이터 삭제</li>
-            <li className="flex gap-2"><span className="text-coral font-bold shrink-0">·</span>처리 정지 요청</li>
+            <Bullet>본인 관련 데이터 열람</Bullet>
+            <Bullet>본인 관련 데이터 삭제</Bullet>
+            <Bullet>처리 정지 요청</Bullet>
           </ul>
           <p className="mt-3">요청은 아래 이메일로 인스타그램 아이디를 명시하여 보내주세요. <b>영업일 기준 3일 이내</b> 처리합니다.</p>
           <a href="mailto:alswoalswo3570@gmail.com" className="mt-2 inline-block font-bold text-coral underline">
