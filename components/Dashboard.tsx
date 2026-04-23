@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ScoreRadarChart, { ScoreAxis } from "@/components/ScoreRadarChart";
 import Emoji, { type EmojiName } from "@/components/Emoji";
 import RichText from "@/components/RichText";
 import { showToast } from "@/components/Toast";
 import { t } from "@/lib/strings";
+import ShareCard from "@/components/ShareCard";
 
 const scoreEmojiName = (v: number): EmojiName =>
   v >= 4.5
@@ -229,6 +230,39 @@ function ErrorBox({ message }: { message: string }) {
 }
 
 function Content({ data }: { data: ProfileResponse }) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [sharing, setSharing] = useState(false);
+
+  const handleShare = async () => {
+    if (!cardRef.current || sharing) return;
+    setSharing(true);
+    try {
+      const html2canvas = (await import("html2canvas")).default;
+      const canvas = await html2canvas(cardRef.current, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: null,
+        logging: false,
+      });
+      canvas.toBlob(async (blob) => {
+        if (!blob) { setSharing(false); return; }
+        const file = new File([blob], "ex-rating.png", { type: "image/png" });
+        if (navigator.canShare?.({ files: [file] })) {
+          await navigator.share({ files: [file], title: `@${data.instaId} 통지표` });
+        } else {
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url; a.download = "ex-rating.png"; a.click();
+          URL.revokeObjectURL(url);
+        }
+        setSharing(false);
+      }, "image/png");
+    } catch {
+      showToast("이미지 생성에 실패했어요 😢", "crying-face");
+      setSharing(false);
+    }
+  };
+
   const axes: ScoreAxis[] = [
     { axis: t("dashboard.axis.looks"), value: data.avg.looks },
     { axis: t("dashboard.axis.personality"), value: data.avg.personality },
@@ -368,20 +402,33 @@ function Content({ data }: { data: ProfileResponse }) {
         )}
       </section>
 
+      {/* 캡처용 ShareCard — 화면 밖에 숨김 */}
+      <div
+        ref={cardRef}
+        style={{ position: "fixed", top: -9999, left: -9999, zIndex: -1 }}
+        aria-hidden
+      >
+        <ShareCard
+          instaId={data.instaId}
+          overall={data.overall}
+          avg={data.avg}
+          count={data.count}
+        />
+      </div>
+
       <div className="mt-12 space-y-3">
         <button
           type="button"
-          onClick={() =>
-            showToast(t("dashboard.cta.share.toast"), "camera-with-flash")
-          }
-          className="group relative w-full rounded-full bg-coral py-4 text-[15px] font-extrabold text-white shadow-poplg border-2 border-ink/10 active:translate-y-1 active:shadow-pop transition"
+          onClick={handleShare}
+          disabled={sharing}
+          className="group relative w-full rounded-full bg-coral py-4 text-[15px] font-extrabold text-white shadow-poplg border-2 border-ink/10 active:translate-y-1 active:shadow-pop transition disabled:opacity-60"
         >
           <span className="absolute -top-2 -right-2 rotate-12 rounded-full bg-butter px-2 py-0.5 text-[10px] font-extrabold text-ink border-2 border-ink/10 shadow-pop">
             {t("dashboard.cta.share.sticker")}
           </span>
           <span className="inline-flex items-center gap-2">
             <Emoji name="camera-with-flash" size={20} />
-            {t("dashboard.cta.share.label")}
+            {sharing ? "이미지 생성 중..." : t("dashboard.cta.share.label")}
           </span>
         </button>
         <button
