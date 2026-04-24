@@ -235,9 +235,21 @@ function ErrorBox({ message }: { message: string }) {
   );
 }
 
+// confetti 조각 데이터
+const CONFETTI = [
+  { emoji: "🎉", tx: "-48px", ty: "-56px", rot: "-30deg", delay: "0ms" },
+  { emoji: "⭐", tx: "52px",  ty: "-60px", rot: "20deg",  delay: "40ms" },
+  { emoji: "💙", tx: "-36px", ty: "-72px", rot: "15deg",  delay: "20ms" },
+  { emoji: "✨", tx: "44px",  ty: "-50px", rot: "-25deg", delay: "60ms" },
+  { emoji: "🎊", tx: "-20px", ty: "-80px", rot: "35deg",  delay: "10ms" },
+  { emoji: "💫", tx: "28px",  ty: "-68px", rot: "-40deg", delay: "50ms" },
+];
+
 function Content({ data }: { data: ProfileResponse }) {
   const locale = useLocale();
   const [sharing, setSharing] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
 
   const handleShare = async () => {
     if (sharing) return;
@@ -294,7 +306,7 @@ function Content({ data }: { data: ProfileResponse }) {
         <Emoji name="ribbon" size={24} />
       </span>
 
-      <header className="mb-7">
+      <header className="mb-7 animate-fade-in">
         <h1 className="text-[26px] font-extrabold leading-[1.25] tracking-tight text-ink">
           <RichText
             k="dashboard.title"
@@ -349,13 +361,14 @@ function Content({ data }: { data: ProfileResponse }) {
         <div className="dashed-rule my-4" />
 
         <ul className="grid grid-cols-2 gap-x-3 gap-y-2.5">
-          {axes.map((s) => {
+          {axes.map((s, idx) => {
             const chipBg =
               s.value >= 4 ? "bg-mint/50" : s.value >= 3 ? "bg-butter/60" : "bg-bubble/60";
             return (
               <li
                 key={s.axis}
-                className={`flex items-center justify-between rounded-2xl border-2 border-ink/8 px-3 py-2.5 ${chipBg}`}
+                className={`flex items-center justify-between rounded-2xl border-2 border-ink/8 px-3 py-2.5 animate-pop-in ${chipBg}`}
+                style={{ animationDelay: `${idx * 70}ms` }}
               >
                 <span className="flex items-center gap-1.5 text-[12px] font-bold text-ink/75">
                   <Emoji name={scoreEmojiName(s.value)} size={17} />
@@ -398,10 +411,11 @@ function Content({ data }: { data: ProfileResponse }) {
               return (
                 <li
                   key={c.id}
-                  className="bubble-tail relative rounded-[22px] border-2 border-ink/10 px-4 py-3.5 pl-12 text-[13.5px] leading-relaxed text-ink shadow-pop"
+                  className="bubble-tail relative rounded-[22px] border-2 border-ink/10 px-4 py-3.5 pl-12 text-[13.5px] leading-relaxed text-ink shadow-pop animate-slide-up"
                   style={{
                     background: toneMap[tone].bg,
                     ["--tail" as string]: toneMap[tone].tail,
+                    animationDelay: `${i * 90}ms`,
                   }}
                 >
                   <span className="absolute left-3 top-3">
@@ -430,24 +444,51 @@ function Content({ data }: { data: ProfileResponse }) {
             {sharing ? "이미지 생성 중..." : t("dashboard.cta.share.label", undefined, locale)}
           </span>
         </button>
-        <button
-          type="button"
-          onClick={async () => {
-            const url = `${location.origin}/rate/${encodeURIComponent(data.instaId)}`;
-            try {
-              await navigator.clipboard.writeText(url);
-              showToast(t("common.toast.link.copied", undefined, locale), "sparkles");
-            } catch {
-              showToast(
-                t("common.toast.link.copyFailedLong", undefined, locale),
-                "crying-face",
-              );
-            }
-          }}
-          className="w-full rounded-full bg-white/80 py-3 text-[13px] font-bold text-ink/70 border-2 border-ink/10 active:translate-y-0.5 transition"
-        >
-          {t("dashboard.cta.copy", undefined, locale)}
-        </button>
+        <div className="relative">
+          {/* confetti burst */}
+          {showConfetti && CONFETTI.map((c, i) => (
+            <span
+              key={i}
+              className="confetti-piece"
+              style={{
+                ["--tx" as string]: c.tx,
+                ["--ty" as string]: c.ty,
+                ["--rot" as string]: c.rot,
+                ["--delay" as string]: c.delay,
+                left: "50%",
+                top: "50%",
+              }}
+            >
+              {c.emoji}
+            </span>
+          ))}
+          <button
+            type="button"
+            onClick={async () => {
+              const url = `${location.origin}/rate/${encodeURIComponent(data.instaId)}`;
+              try {
+                await navigator.clipboard.writeText(url);
+                setCopied(true);
+                setShowConfetti(true);
+                setTimeout(() => { setCopied(false); setShowConfetti(false); }, 2200);
+              } catch {
+                showToast(t("common.toast.link.copyFailedLong", undefined, locale), "crying-face");
+              }
+            }}
+            className={`w-full rounded-full py-3.5 text-[14px] font-extrabold border-2 border-ink/10 active:translate-y-0.5 transition-all duration-300 ${
+              copied
+                ? "bg-mint text-ink shadow-pop animate-copy-success"
+                : "bg-bubble/60 text-ink/80 shadow-pop hover:bg-bubble/80"
+            }`}
+          >
+            <span className="inline-flex items-center gap-2">
+              <Emoji name={copied ? "sparkling-heart" : "love-letter"} size={17} />
+              {copied
+                ? t("dashboard.cta.copy.done", undefined, locale)
+                : t("dashboard.cta.copy", undefined, locale)}
+            </span>
+          </button>
+        </div>
       </div>
     </>
   );
