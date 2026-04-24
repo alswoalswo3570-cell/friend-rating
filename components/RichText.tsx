@@ -22,9 +22,24 @@ function tokenize(
     while ((m = re.exec(line)) !== null) {
       if (m.index > last) nodes.push(line.slice(last, m.index));
       if (m[1] !== undefined) {
+        // bold 안에도 {var} 치환 적용
+        const boldParts: React.ReactNode[] = [];
+        const bRe = /\{(\w+)\}/g;
+        let bLast = 0; let bm: RegExpExecArray | null;
+        while ((bm = bRe.exec(m[1])) !== null) {
+          if (bm.index > bLast) boldParts.push(m[1].slice(bLast, bm.index));
+          const bv = vars?.[bm[1]];
+          boldParts.push(
+            <React.Fragment key={`bb-${key++}`}>
+              {bv !== undefined ? bv : `{${bm[1]}}`}
+            </React.Fragment>,
+          );
+          bLast = bRe.lastIndex;
+        }
+        if (bLast < m[1].length) boldParts.push(m[1].slice(bLast));
         nodes.push(
           <b key={`b-${key++}`} className={boldClassName}>
-            {m[1]}
+            {boldParts.length ? boldParts : m[1]}
           </b>,
         );
       } else if (m[2] !== undefined) {
