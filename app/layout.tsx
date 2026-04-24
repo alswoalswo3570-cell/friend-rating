@@ -13,14 +13,14 @@ export const metadata: Metadata = {
   openGraph: {
     title: strings["meta.title"].ko,
     description: strings["meta.description"].ko,
-    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
+    images: [{ url: "/og-image-v2.png", width: 1200, height: 630 }],
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: strings["meta.title"].ko,
     description: strings["meta.description"].ko,
-    images: ["/og-image.png"],
+    images: ["/og-image-v2.png"],
   },
 };
 
