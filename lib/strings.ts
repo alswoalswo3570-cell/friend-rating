@@ -121,8 +121,11 @@ export const strings = {
   "rateForm.success.msg.avg":        { ko: "{avg}점", en: "{avg}-star" },
   "rateForm.success.shushing":       { ko: "누가 썼는지 아무도 몰라요", en: "No one knows who wrote it" },
   "rateForm.success.cta.view":       { ko: "@{id} 통지표 구경하기", en: "Peek at @{id}'s report card" },
+  "rateForm.success.cta.notify":     { ko: "결과 친구한테 알려주기 📲", en: "Let them know their results 📲" },
+  "rateForm.success.cta.notify.sub": { ko: "링크 공유 → 인스타 스토리로 퍼뜨려봐!", en: "Share link → post to your Instagram Story!" },
+  "rateForm.success.cta.notify.done":{ ko: "링크 복사됐어요! 스토리에 붙여넣어봐 🎉", en: "Link copied! Paste it into your Story 🎉" },
   "rateForm.success.cta.home":       { ko: "홈으로 돌아가기", en: "Back to home" },
-  "rateForm.success.footer":         { ko: "2C 프리뷰 · 완료 화면", en: "2C preview · Done screen" },
+  "rateForm.success.footer":         { ko: "2026 · Friend-Rating", en: "2026 · Friend-Rating" },
 
   // ───── Dashboard ─────
   "dashboard.card.label":            { ko: "MY.REPORT.CARD", en: "MY.REPORT.CARD" },

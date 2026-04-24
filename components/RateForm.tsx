@@ -256,6 +256,40 @@ function Success({
   avg: string;
 }) {
   const locale = useLocale();
+  const [notified, setNotified] = useState(false);
+  const [notifying, setNotifying] = useState(false);
+
+  const handleNotify = async () => {
+    if (notifying) return;
+    setNotifying(true);
+    const url = `${location.origin}/dashboard?id=${encodeURIComponent(instaId)}`;
+    const shareText = locale === "ko"
+      ? `@${instaId}의 찐친 통지표가 올라왔어! 확인해봐 👀`
+      : `@${instaId}'s friend report card is ready! Check it out 👀`;
+
+    try {
+      // 모바일 네이티브 공유 시트 (iOS/Android → 인스타 스토리 선택 가능)
+      if (typeof navigator !== "undefined" && navigator.share) {
+        await navigator.share({ title: shareText, url });
+      } else {
+        await navigator.clipboard.writeText(url);
+      }
+      setNotified(true);
+      setTimeout(() => setNotified(false), 3000);
+    } catch (e) {
+      // AbortError = 유저가 취소 → 조용히 무시
+      if (e instanceof Error && e.name !== "AbortError") {
+        try {
+          await navigator.clipboard.writeText(url);
+          setNotified(true);
+          setTimeout(() => setNotified(false), 3000);
+        } catch { /* noop */ }
+      }
+    } finally {
+      setNotifying(false);
+    }
+  };
+
   return (
     <main className="relative px-5 pt-10 pb-16 text-center">
       <span className="deco" style={{ top: 16, right: 26, ["--r" as string]: "-14deg" }}>
@@ -301,6 +335,38 @@ function Success({
       </p>
 
       <div className="mt-8 space-y-3 text-left">
+        {/* 🔑 핵심 CTA: 결과 친구한테 알려주기 */}
+        <div className="relative overflow-hidden rounded-[22px] border-2 border-ink/10 shadow-poplg">
+          {/* Instagram 그라디언트 배경 */}
+          <div className="absolute inset-0 bg-gradient-to-br from-[#833ab4] via-[#fd1d1d] to-[#fcb045] opacity-90" />
+          <button
+            type="button"
+            onClick={handleNotify}
+            disabled={notifying}
+            className="relative w-full px-5 py-4 text-center transition active:brightness-90 disabled:opacity-70"
+          >
+            {notified ? (
+              <span className="flex flex-col items-center gap-0.5">
+                <span className="flex items-center gap-2 text-[15px] font-extrabold text-white animate-copy-success">
+                  <Emoji name="sparkling-heart" size={18} />
+                  {t("rateForm.success.cta.notify.done", undefined, locale)}
+                </span>
+              </span>
+            ) : (
+              <span className="flex flex-col items-center gap-0.5">
+                <span className="flex items-center gap-2 text-[15px] font-extrabold text-white">
+                  <Emoji name="camera-with-flash" size={18} />
+                  {t("rateForm.success.cta.notify", undefined, locale)}
+                </span>
+                <span className="text-[11px] text-white/70 font-medium">
+                  {t("rateForm.success.cta.notify.sub", undefined, locale)}
+                </span>
+              </span>
+            )}
+          </button>
+        </div>
+
+        {/* 서브: 리포트 구경하기 */}
         <Link
           href={`/dashboard?id=${encodeURIComponent(instaId)}`}
           className="block w-full rounded-full bg-coral py-4 text-center text-[15px] font-extrabold text-white shadow-poplg border-2 border-ink/10 active:translate-y-1 active:shadow-pop transition"
@@ -310,6 +376,7 @@ function Success({
             {t("rateForm.success.cta.view", { id: instaId }, locale)}
           </span>
         </Link>
+
         <Link
           href="/"
           className="block w-full rounded-full bg-white/80 py-3 text-center text-[13px] font-bold text-ink/70 border-2 border-ink/10 active:translate-y-0.5 transition"
