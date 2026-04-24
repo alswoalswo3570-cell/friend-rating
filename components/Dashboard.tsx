@@ -67,6 +67,14 @@ export default function Dashboard() {
 
   const [state, setState] = useState<FetchState>({ status: "idle" });
 
+  // 공유 링크로 직접 진입 시 브라우저 back 버튼 → 앱 종료 대신 홈으로
+  useEffect(() => {
+    window.history.pushState({ frDashboard: true }, "");
+    const handlePop = () => { window.location.href = "/"; };
+    window.addEventListener("popstate", handlePop);
+    return () => window.removeEventListener("popstate", handlePop);
+  }, []);
+
   useEffect(() => {
     if (!id) {
       setState({ status: "missing" });
