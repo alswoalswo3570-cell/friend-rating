@@ -1,4 +1,4 @@
-import GuestVerify from "@/components/GuestVerify";
+import { redirect } from "next/navigation";
 
 export default function RateVerifyPage({
   params,
@@ -6,5 +6,5 @@ export default function RateVerifyPage({
   params: { insta_id: string };
 }) {
   const instaId = decodeURIComponent(params.insta_id).replace(/^@/, "");
-  return <GuestVerify instaId={instaId} />;
+  redirect(`/rate/${encodeURIComponent(instaId)}/write`);
 }

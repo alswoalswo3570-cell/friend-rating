@@ -43,10 +43,9 @@ const MAX_COMMENT = 120;
 
 type Props = {
   instaId: string;
-  birth: string;
 };
 
-export default function RateForm({ instaId, birth }: Props) {
+export default function RateForm({ instaId }: Props) {
   const locale = useLocale();
   const [scores, setScores] = useState<Scores>(initialScores);
   const [comment, setComment] = useState("");
@@ -69,7 +68,6 @@ export default function RateForm({ instaId, birth }: Props) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           instaId,
-          birthCode: birth,
           scoreHumor: scores.humor,
           scoreLoyalty: scores.loyalty,
           scoreTexting: scores.texting,
@@ -106,7 +104,7 @@ export default function RateForm({ instaId, birth }: Props) {
   };
 
   if (submitted) {
-    return <Success instaId={instaId} birth={birth} avg={avg} />;
+    return <Success instaId={instaId} avg={avg} />;
   }
 
   return (
@@ -135,9 +133,6 @@ export default function RateForm({ instaId, birth }: Props) {
           </p>
           <p className="truncate text-[15px] font-extrabold text-ink">@{instaId}</p>
         </div>
-        <span className="rounded-full bg-cream px-2.5 py-1 text-[11px] font-extrabold tracking-wider text-ink/60 tabular-nums">
-          {birth || "??????"}
-        </span>
       </div>
 
       <form onSubmit={submit} className="space-y-4">
@@ -255,11 +250,9 @@ export default function RateForm({ instaId, birth }: Props) {
 
 function Success({
   instaId,
-  birth,
   avg,
 }: {
   instaId: string;
-  birth: string;
   avg: string;
 }) {
   const locale = useLocale();
@@ -309,7 +302,7 @@ function Success({
 
       <div className="mt-8 space-y-3 text-left">
         <Link
-          href={`/dashboard?id=${encodeURIComponent(instaId)}&b=${encodeURIComponent(birth)}`}
+          href={`/dashboard?id=${encodeURIComponent(instaId)}`}
           className="block w-full rounded-full bg-coral py-4 text-center text-[15px] font-extrabold text-white shadow-poplg border-2 border-ink/10 active:translate-y-1 active:shadow-pop transition"
         >
           <span className="inline-flex items-center gap-2">

@@ -1,28 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
-import { hashBirth, normalizeInstaId } from "@/lib/hash";
+import { normalizeInstaId } from "@/lib/hash";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function GET(req: NextRequest) {
   const idRaw = req.nextUrl.searchParams.get("id") ?? "";
-  const birthCode = req.nextUrl.searchParams.get("birth") ?? "";
 
   const instaId = normalizeInstaId(idRaw);
   if (instaId.length < 2 || instaId.length > 30 || !/^[a-z0-9._]+$/i.test(instaId)) {
     return NextResponse.json({ error: "invalid_insta_id" }, { status: 400 });
   }
-  if (!/^\d{6}$/.test(birthCode)) {
-    return NextResponse.json({ error: "invalid_birth_code" }, { status: 400 });
-  }
-
-  const birthCodeHash = hashBirth(birthCode);
 
   let reviews;
   try {
     reviews = await prisma.friendReview.findMany({
-      where: { instaId, birthCodeHash },
+      where: { instaId },
       orderBy: { createdAt: "desc" },
       select: {
         id: true,

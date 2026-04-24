@@ -13,15 +13,13 @@ export default function HostLookupForm() {
   const router = useRouter();
   const locale = useLocale();
   const [instaId, setInstaId] = useState("");
-  const [birth, setBirth] = useState("");
   const [loading, setLoading] = useState(false);
   const [emptyTarget, setEmptyTarget] = useState<string | null>(null);
   const [err, setErr] = useState<string | null>(null);
 
   const idClean = instaId.replace(/^@/, "").trim();
   const idValid = /^[a-zA-Z0-9._]{2,30}$/.test(idClean);
-  const birthValid = /^\d{6}$/.test(birth);
-  const canSubmit = !loading && idValid && birthValid;
+  const canSubmit = !loading && idValid;
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,7 +29,7 @@ export default function HostLookupForm() {
     setLoading(true);
     try {
       const res = await fetch(
-        `/api/profile?id=${encodeURIComponent(idClean)}&birth=${encodeURIComponent(birth)}`,
+        `/api/profile?id=${encodeURIComponent(idClean)}`,
         { cache: "no-store" },
       );
       if (res.status === 404) {
@@ -43,9 +41,7 @@ export default function HostLookupForm() {
         setErr(t("lookup.error.queryFailed", { msg: txt || String(res.status) }, locale));
         return;
       }
-      router.push(
-        `/dashboard?id=${encodeURIComponent(idClean)}&b=${encodeURIComponent(birth)}`,
-      );
+      router.push(`/dashboard?id=${encodeURIComponent(idClean)}`);
     } catch (e) {
       setErr(e instanceof Error ? e.message : t("common.error.network", undefined, locale));
     } finally {
@@ -114,26 +110,6 @@ export default function HostLookupForm() {
             className="flex-1 bg-transparent py-3 pr-4 text-[15px] font-bold text-ink placeholder:text-ink/30 outline-none"
           />
         </div>
-
-        <label className="mt-4 block text-[12px] font-extrabold text-ink/80">
-          {t("lookup.field.birth.label", undefined, locale)}{" "}
-          <span className="font-bold text-ink/40">
-            {t("lookup.field.birth.hint", undefined, locale)}
-          </span>
-        </label>
-        <input
-          type="tel"
-          inputMode="numeric"
-          pattern="\d{6}"
-          maxLength={6}
-          value={birth}
-          onChange={(e) => setBirth(e.target.value.replace(/\D/g, ""))}
-          placeholder={t("lookup.field.birth.placeholder", undefined, locale)}
-          className="mt-1.5 w-full rounded-2xl border-2 border-ink/10 bg-cream px-4 py-3 text-center text-[22px] font-extrabold tracking-[0.4em] text-ink placeholder:text-ink/20 outline-none focus:border-coral/70 focus:bg-white transition tabular-nums"
-        />
-        <p className="mt-1.5 text-[11px] text-ink/45">
-          {t("lookup.field.birth.footer", undefined, locale)}
-        </p>
 
         {err && (
           <p className="mt-4 rounded-2xl bg-bubble/40 border-2 border-ink/10 px-3 py-2 text-[12px] leading-relaxed text-ink/80">

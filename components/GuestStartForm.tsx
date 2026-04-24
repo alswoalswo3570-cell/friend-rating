@@ -19,7 +19,7 @@ export default function GuestStartForm() {
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!idValid) return;
-    router.push(`/rate/${encodeURIComponent(idClean)}`);
+    router.push(`/rate/${encodeURIComponent(idClean)}/write`);
   };
 
   return (

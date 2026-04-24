@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
-import { hashBirth, hashIp, normalizeInstaId } from "@/lib/hash";
+import { hashIp, normalizeInstaId } from "@/lib/hash";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -27,15 +27,11 @@ export async function POST(req: NextRequest) {
   }
 
   const instaIdRaw = typeof body.instaId === "string" ? body.instaId : "";
-  const birthCode = typeof body.birthCode === "string" ? body.birthCode : "";
   const comment = typeof body.comment === "string" ? body.comment : "";
 
   const instaId = normalizeInstaId(instaIdRaw);
   if (instaId.length < 2 || instaId.length > 30 || !/^[a-z0-9._]+$/i.test(instaId)) {
     return NextResponse.json({ error: "invalid_insta_id" }, { status: 400 });
-  }
-  if (!/^\d{6}$/.test(birthCode)) {
-    return NextResponse.json({ error: "invalid_birth_code" }, { status: 400 });
   }
 
   const scoreKeys = [
@@ -58,13 +54,11 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "comment_too_long" }, { status: 400 });
   }
 
-  const birthCodeHash = hashBirth(birthCode);
   const ipHash = hashIp(getClientIp(req));
 
   const recent = await prisma.friendReview.findFirst({
     where: {
       instaId,
-      birthCodeHash,
       ipHash,
       createdAt: { gte: new Date(Date.now() - RATE_LIMIT_WINDOW_MS) },
     },
@@ -80,7 +74,7 @@ export async function POST(req: NextRequest) {
   const created = await prisma.friendReview.create({
     data: {
       instaId,
-      birthCodeHash,
+      birthCodeHash: "",
       scoreHumor: scores.scoreHumor!,
       scoreLoyalty: scores.scoreLoyalty!,
       scoreTexting: scores.scoreTexting!,

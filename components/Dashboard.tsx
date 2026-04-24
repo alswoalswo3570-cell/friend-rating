@@ -64,19 +64,18 @@ export default function Dashboard() {
   const search = useSearchParams();
   const locale = useLocale();
   const id = search.get("id") ?? "";
-  const birth = search.get("b") ?? "";
 
   const [state, setState] = useState<FetchState>({ status: "idle" });
 
   useEffect(() => {
-    if (!id || !/^\d{6}$/.test(birth)) {
+    if (!id) {
       setState({ status: "missing" });
       return;
     }
     setState({ status: "loading" });
     const ctrl = new AbortController();
     fetch(
-      `/api/profile?id=${encodeURIComponent(id)}&birth=${encodeURIComponent(birth)}`,
+      `/api/profile?id=${encodeURIComponent(id)}`,
       { signal: ctrl.signal, cache: "no-store" },
     )
       .then(async (res) => {
@@ -100,7 +99,7 @@ export default function Dashboard() {
         });
       });
     return () => ctrl.abort();
-  }, [id, birth]);
+  }, [id]);
 
   return (
     <main className="relative px-5 pt-6 pb-16">
