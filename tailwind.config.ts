@@ -8,14 +8,14 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        cream: "#FFF6EC",
-        peach: "#FFB7A5",
-        coral: "#FF8BA0",
-        bubble: "#FFC2DD",
+        cream: "#F0F7FF",
+        peach: "#78BEF5",
+        coral: "#4A9EE7",
+        bubble: "#BAD9FB",
         mint: "#A8E6CF",
         lavender: "#C9B6FF",
         butter: "#FFE680",
-        ink: "#4A2B4E",
+        ink: "#1C304E",
       },
       fontFamily: {
         sans: [
@@ -28,8 +28,8 @@ const config: Config = {
         ],
       },
       boxShadow: {
-        pop: "0 6px 0 0 rgba(74,43,78,0.15)",
-        poplg: "0 10px 0 0 rgba(74,43,78,0.18)",
+        pop: "0 6px 0 0 rgba(28,48,78,0.15)",
+        poplg: "0 10px 0 0 rgba(28,48,78,0.18)",
       },
     },
   },

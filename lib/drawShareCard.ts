@@ -57,9 +57,9 @@ export async function drawShareCard(data: CardData): Promise<Blob> {
 
   // ── Background gradient ──────────────────────────────────────────
   const grad = ctx.createLinearGradient(0, 0, W * 0.55, H);
-  grad.addColorStop(0, "#FFF6EC");
-  grad.addColorStop(0.5, "#FFD6E8");
-  grad.addColorStop(1, "#DDD0FF");
+  grad.addColorStop(0, "#F0F7FF");
+  grad.addColorStop(0.5, "#C5DFF8");
+  grad.addColorStop(1, "#BDD5F5");
   ctx.fillStyle = grad;
   ctx.fillRect(0, 0, W, H);
 
@@ -98,13 +98,13 @@ export async function drawShareCard(data: CardData): Promise<Blob> {
 
   ctx.save();
   ctx.globalAlpha = 0.1;
-  ctx.strokeStyle = "#4A2B4E";
+  ctx.strokeStyle = "#1C304E";
   ctx.lineWidth = 3;
   rr(ctx, badgeX, badgeY, badgeW, badgeH, badgeH / 2);
   ctx.stroke();
   ctx.restore();
 
-  ctx.fillStyle = "#4A2B4E";
+  ctx.fillStyle = "#1C304E";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
   ctx.font = `800 21px ${FONT}`;
@@ -120,7 +120,7 @@ export async function drawShareCard(data: CardData): Promise<Blob> {
   ctx.fillText(`@${data.instaId}`, W / 2, nameY);
 
   ctx.font = `900 40px ${FONT}`;
-  ctx.fillStyle = "#4A2B4E";
+  ctx.fillStyle = "#1C304E";
   ctx.fillText("님의 찐친 통지표", W / 2, nameY + 40);
 
   // ── Overall card ─────────────────────────────────────────────────
@@ -136,7 +136,7 @@ export async function drawShareCard(data: CardData): Promise<Blob> {
 
   ctx.save();
   ctx.globalAlpha = 0.08;
-  ctx.strokeStyle = "#4A2B4E";
+  ctx.strokeStyle = "#1C304E";
   ctx.lineWidth = 3;
   rr(ctx, PX, cardY, CW, cardH, 48);
   ctx.stroke();
@@ -150,7 +150,7 @@ export async function drawShareCard(data: CardData): Promise<Blob> {
 
   // Score number
   ctx.font = `900 104px ${FONT}`;
-  ctx.fillStyle = "#FF8BA0";
+  ctx.fillStyle = "#4A9EE7";
   ctx.textBaseline = "top";
   ctx.fillText(data.overall.toFixed(1), W / 2, cardY + 84);
 
@@ -186,7 +186,7 @@ export async function drawShareCard(data: CardData): Promise<Blob> {
 
     ctx.save();
     ctx.globalAlpha = 0.07;
-    ctx.strokeStyle = "#4A2B4E";
+    ctx.strokeStyle = "#1C304E";
     ctx.lineWidth = 3;
     rr(ctx, PX, ry, CW, ROW_H, 28);
     ctx.stroke();
@@ -201,7 +201,7 @@ export async function drawShareCard(data: CardData): Promise<Blob> {
 
     // Score value
     ctx.font = `900 30px ${FONT}`;
-    ctx.fillStyle = "#4A2B4E";
+    ctx.fillStyle = "#1C304E";
     ctx.textAlign = "right";
     ctx.textBaseline = "middle";
     ctx.fillText(s.value.toFixed(1), PX + CW - 28, ry + ROW_H / 2);
