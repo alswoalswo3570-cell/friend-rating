@@ -39,11 +39,11 @@ export async function POST(req: NextRequest) {
   }
 
   const scoreKeys = [
-    "scoreLooks",
-    "scorePersonality",
-    "scoreLove",
-    "scoreManner",
-    "scoreReunion",
+    "scoreHumor",
+    "scoreLoyalty",
+    "scoreTexting",
+    "scoreVibes",
+    "scoreSecrets",
   ] as const;
   const scores: Partial<Record<(typeof scoreKeys)[number], number>> = {};
   for (const k of scoreKeys) {
@@ -61,15 +61,14 @@ export async function POST(req: NextRequest) {
   const birthCodeHash = hashBirth(birthCode);
   const ipHash = hashIp(getClientIp(req));
 
-  // Rate limit: 같은 IP + 같은 (인스타ID, 생일해시) 5분 내 중복 차단
-  const recent = await prisma.review.findFirst({
+  const recent = await prisma.friendReview.findFirst({
     where: {
       instaId,
       birthCodeHash,
       ipHash,
       createdAt: { gte: new Date(Date.now() - RATE_LIMIT_WINDOW_MS) },
     },
-    select: { id: true, createdAt: true },
+    select: { id: true },
   });
   if (recent) {
     return NextResponse.json(
@@ -78,15 +77,15 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const created = await prisma.review.create({
+  const created = await prisma.friendReview.create({
     data: {
       instaId,
       birthCodeHash,
-      scoreLooks: scores.scoreLooks!,
-      scorePersonality: scores.scorePersonality!,
-      scoreLove: scores.scoreLove!,
-      scoreManner: scores.scoreManner!,
-      scoreReunion: scores.scoreReunion!,
+      scoreHumor: scores.scoreHumor!,
+      scoreLoyalty: scores.scoreLoyalty!,
+      scoreTexting: scores.scoreTexting!,
+      scoreVibes: scores.scoreVibes!,
+      scoreSecrets: scores.scoreSecrets!,
       comment,
       ipHash,
     },

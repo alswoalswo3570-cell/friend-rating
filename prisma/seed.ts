@@ -11,7 +11,7 @@ const hashIp = (ip: string) => sha256(`${IP_SALT}:${ip}`);
 async function main() {
   console.log("🌱 Seeding...");
 
-  await prisma.review.deleteMany({});
+  await prisma.friendReview.deleteMany({});
 
   const targetInstaId = "minjae_shin";
   const targetBirthHash = hashBirth("940530");
@@ -19,58 +19,43 @@ async function main() {
   const reviews = [
     {
       scores: [4, 4, 3, 4, 2],
-      comment: "웃음소리가 진짜 맑았어~ 근데 약속은 맨날 늦음 ㅋㅋ",
+      comment: "유머감각 최고~ 근데 연락은 맨날 늦음 ㅋㅋ",
       ip: "seed-ip-001",
     },
     {
       scores: [5, 3, 2, 4, 1],
-      comment: "사람은 착한데 연애할 땐 살짝 자기중심적이었어용,,,",
+      comment: "웃기긴 한데 비밀 지키는 건 좀 별로였어",
       ip: "seed-ip-002",
     },
     {
-      scores: [4, 4, 3, 4, 2],
-      comment: "다시 만나진 않겠지만 좋은 사람이었다고 말해주고 싶어!",
+      scores: [4, 5, 3, 4, 3],
+      comment: "진짜 의리 있는 친구! 힘들 때 제일 먼저 와줬어",
       ip: "seed-ip-003",
     },
     {
-      scores: [3, 3, 3, 4, 2],
-      comment: "첫 만남엔 설레었는데 중반부터 식어버린 느낌…",
+      scores: [3, 3, 4, 4, 3],
+      comment: "바이브 좋고 연락 잘 되는 편~ 오래 사귄 친구",
       ip: "seed-ip-004",
     },
   ];
 
   for (const r of reviews) {
-    await prisma.review.create({
+    await prisma.friendReview.create({
       data: {
         instaId: targetInstaId,
         birthCodeHash: targetBirthHash,
-        scoreLooks: r.scores[0],
-        scorePersonality: r.scores[1],
-        scoreLove: r.scores[2],
-        scoreManner: r.scores[3],
-        scoreReunion: r.scores[4],
+        scoreHumor: r.scores[0],
+        scoreLoyalty: r.scores[1],
+        scoreTexting: r.scores[2],
+        scoreVibes: r.scores[3],
+        scoreSecrets: r.scores[4],
         comment: r.comment,
         ipHash: hashIp(r.ip),
       },
     });
   }
 
-  // 장난 생일로 남긴 격리 프로필 (1건) — 동작 확인용
-  await prisma.review.create({
-    data: {
-      instaId: targetInstaId,
-      birthCodeHash: hashBirth("000101"),
-      scoreLooks: 1,
-      scorePersonality: 1,
-      scoreLove: 1,
-      scoreManner: 1,
-      scoreReunion: 1,
-      comment: "(장난 격리 프로필)",
-      ipHash: hashIp("seed-ip-grief"),
-    },
-  });
-
-  const total = await prisma.review.count();
+  const total = await prisma.friendReview.count();
   console.log(`✅ Seeded ${total} reviews`);
 }
 

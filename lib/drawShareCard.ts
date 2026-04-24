@@ -1,9 +1,9 @@
 type AvgScores = {
-  looks: number;
-  personality: number;
-  love: number;
-  manner: number;
-  reunion: number;
+  humor: number;
+  loyalty: number;
+  texting: number;
+  vibes: number;
+  secrets: number;
 };
 
 type CardData = {
@@ -81,7 +81,7 @@ export async function drawShareCard(data: CardData): Promise<Blob> {
   ctx.restore();
 
   // ── Badge ────────────────────────────────────────────────────────
-  const BADGE = "✦  EX-RATING  ✦";
+  const BADGE = "✦  FRIEND-RATING  ✦";
   ctx.font = `800 21px ${FONT}`;
   const badgeTW = ctx.measureText(BADGE).width;
   const badgeW = badgeTW + 80;
@@ -121,7 +121,7 @@ export async function drawShareCard(data: CardData): Promise<Blob> {
 
   ctx.font = `900 40px ${FONT}`;
   ctx.fillStyle = "#4A2B4E";
-  ctx.fillText("님의 솔직한 통지표", W / 2, nameY + 40);
+  ctx.fillText("님의 찐친 통지표", W / 2, nameY + 40);
 
   // ── Overall card ─────────────────────────────────────────────────
   const cardY = nameY + 40 + 56;
@@ -162,11 +162,11 @@ export async function drawShareCard(data: CardData): Promise<Blob> {
 
   // ── Score rows ──────────────────────────────────────────────────
   const scores: { label: string; value: number }[] = [
-    { label: "외모", value: data.avg.looks },
-    { label: "성격", value: data.avg.personality },
-    { label: "연애스타일", value: data.avg.love },
-    { label: "매너", value: data.avg.manner },
-    { label: "재회의사", value: data.avg.reunion },
+    { label: "유머감각", value: data.avg.humor },
+    { label: "의리", value: data.avg.loyalty },
+    { label: "연락", value: data.avg.texting },
+    { label: "바이브", value: data.avg.vibes },
+    { label: "비밀유지", value: data.avg.secrets },
   ];
 
   const ROW_H = 90;
@@ -232,7 +232,7 @@ export async function drawShareCard(data: CardData): Promise<Blob> {
   ctx.fillStyle = "rgba(74,43,78,0.38)";
   ctx.textAlign = "center";
   ctx.textBaseline = "bottom";
-  ctx.fillText("ex-rating.vercel.app", W / 2, H - 44);
+  ctx.fillText("friend-rating.vercel.app", W / 2, H - 44);
 
   return new Promise<Blob>((resolve, reject) => {
     canvas.toBlob(

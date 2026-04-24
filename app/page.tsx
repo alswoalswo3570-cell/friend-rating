@@ -26,7 +26,7 @@ export default function Landing() {
         <div className="absolute left-1/2 top-5 -translate-x-1/2">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1.5 text-[11px] font-extrabold tracking-[0.18em] text-ink shadow-poplg border-2 border-ink/10 backdrop-blur-sm">
             <Emoji name="sparkles" size={14} />
-            {t("common.badge.exrating", undefined, locale)}
+            {t("common.badge", undefined, locale)}
             <Emoji name="strawberry" size={14} />
           </span>
         </div>

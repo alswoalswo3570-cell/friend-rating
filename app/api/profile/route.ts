@@ -21,16 +21,16 @@ export async function GET(req: NextRequest) {
 
   let reviews;
   try {
-    reviews = await prisma.review.findMany({
+    reviews = await prisma.friendReview.findMany({
       where: { instaId, birthCodeHash },
       orderBy: { createdAt: "desc" },
       select: {
         id: true,
-        scoreLooks: true,
-        scorePersonality: true,
-        scoreLove: true,
-        scoreManner: true,
-        scoreReunion: true,
+        scoreHumor: true,
+        scoreLoyalty: true,
+        scoreTexting: true,
+        scoreVibes: true,
+        scoreSecrets: true,
         comment: true,
         createdAt: true,
       },
@@ -47,25 +47,25 @@ export async function GET(req: NextRequest) {
   const n = reviews.length;
   const sum = reviews.reduce(
     (acc, r) => {
-      acc.looks += r.scoreLooks;
-      acc.personality += r.scorePersonality;
-      acc.love += r.scoreLove;
-      acc.manner += r.scoreManner;
-      acc.reunion += r.scoreReunion;
+      acc.humor += r.scoreHumor;
+      acc.loyalty += r.scoreLoyalty;
+      acc.texting += r.scoreTexting;
+      acc.vibes += r.scoreVibes;
+      acc.secrets += r.scoreSecrets;
       return acc;
     },
-    { looks: 0, personality: 0, love: 0, manner: 0, reunion: 0 },
+    { humor: 0, loyalty: 0, texting: 0, vibes: 0, secrets: 0 },
   );
   const round = (v: number) => Math.round((v / n) * 10) / 10;
   const avg = {
-    looks: round(sum.looks),
-    personality: round(sum.personality),
-    love: round(sum.love),
-    manner: round(sum.manner),
-    reunion: round(sum.reunion),
+    humor: round(sum.humor),
+    loyalty: round(sum.loyalty),
+    texting: round(sum.texting),
+    vibes: round(sum.vibes),
+    secrets: round(sum.secrets),
   };
   const overall = round(
-    (sum.looks + sum.personality + sum.love + sum.manner + sum.reunion) / 5,
+    (sum.humor + sum.loyalty + sum.texting + sum.vibes + sum.secrets) / 5,
   );
 
   return NextResponse.json({

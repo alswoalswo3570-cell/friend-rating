@@ -42,11 +42,11 @@ type ProfileResponse = {
   instaId: string;
   count: number;
   avg: {
-    looks: number;
-    personality: number;
-    love: number;
-    manner: number;
-    reunion: number;
+    humor: number;
+    loyalty: number;
+    texting: number;
+    vibes: number;
+    secrets: number;
   };
   overall: number;
   comments: { id: string; comment: string; createdAt: string }[];
@@ -113,7 +113,7 @@ export default function Dashboard() {
         </Link>
         <span className="inline-flex items-center gap-1.5 rounded-full bg-butter px-3 py-1 text-[11px] font-extrabold tracking-[0.15em] text-ink shadow-pop">
           <Emoji name="sparkles" size={14} />
-          {t("common.badge.exrating", undefined, locale)}
+          {t("common.badge", undefined, locale)}
           <Emoji name="strawberry" size={14} />
         </span>
       </div>
@@ -276,11 +276,11 @@ function Content({ data }: { data: ProfileResponse }) {
   };
 
   const axes: ScoreAxis[] = [
-    { axis: t("dashboard.axis.looks", undefined, locale), value: data.avg.looks },
-    { axis: t("dashboard.axis.personality", undefined, locale), value: data.avg.personality },
-    { axis: t("dashboard.axis.love", undefined, locale), value: data.avg.love },
-    { axis: t("dashboard.axis.manner", undefined, locale), value: data.avg.manner },
-    { axis: t("dashboard.axis.reunion", undefined, locale), value: data.avg.reunion },
+    { axis: t("dashboard.axis.humor", undefined, locale), value: data.avg.humor },
+    { axis: t("dashboard.axis.loyalty", undefined, locale), value: data.avg.loyalty },
+    { axis: t("dashboard.axis.texting", undefined, locale), value: data.avg.texting },
+    { axis: t("dashboard.axis.vibes", undefined, locale), value: data.avg.vibes },
+    { axis: t("dashboard.axis.secrets", undefined, locale), value: data.avg.secrets },
   ];
 
   return (

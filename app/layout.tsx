@@ -5,7 +5,7 @@ import ToastHost from "@/components/Toast";
 import { strings } from "@/lib/strings";
 import { LocaleProvider } from "@/lib/locale";
 
-const GA_ID = "G-DH81CG7141";
+const GA_ID = ""; // TODO: Friend-Rating GA4 ID 등록 후 채우기
 
 export const metadata: Metadata = {
   title: strings["meta.title"].ko,

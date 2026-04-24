@@ -8,18 +8,18 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Review {
-  id               String   @id @default(uuid())
-  instaId          String
-  birthCodeHash    String
-  scoreLooks       Int
-  scorePersonality Int
-  scoreLove        Int
-  scoreManner      Int
-  scoreReunion     Int
-  comment          String
-  ipHash           String
-  createdAt        DateTime @default(now())
+model FriendReview {
+  id            String   @id @default(uuid())
+  instaId       String
+  birthCodeHash String
+  scoreHumor    Int
+  scoreLoyalty  Int
+  scoreTexting  Int
+  scoreVibes    Int
+  scoreSecrets  Int
+  comment       String
+  ipHash        String
+  createdAt     DateTime @default(now())
 
   @@index([instaId, birthCodeHash])
 }

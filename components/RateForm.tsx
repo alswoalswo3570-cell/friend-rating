@@ -7,9 +7,9 @@ import RichText from "@/components/RichText";
 import { t, type StringKey } from "@/lib/strings";
 import { useLocale } from "@/lib/locale";
 
-type AxisKey = "looks" | "personality" | "love" | "manner" | "reunion";
+type AxisKey = "humor" | "loyalty" | "texting" | "vibes" | "secrets";
 
-const AXIS_KEYS: AxisKey[] = ["looks", "personality", "love", "manner", "reunion"];
+const AXIS_KEYS: AxisKey[] = ["humor", "loyalty", "texting", "vibes", "secrets"];
 
 const axisStringKeys = (a: AxisKey) => ({
   label: `rateForm.axis.${a}.label` as StringKey,
@@ -21,11 +21,11 @@ const axisStringKeys = (a: AxisKey) => ({
 type Scores = Record<AxisKey, number>;
 
 const initialScores: Scores = {
-  looks: 3,
-  personality: 3,
-  love: 3,
-  manner: 3,
-  reunion: 3,
+  humor: 3,
+  loyalty: 3,
+  texting: 3,
+  vibes: 3,
+  secrets: 3,
 };
 
 const scoreEmojiName = (v: number): EmojiName =>
@@ -70,11 +70,11 @@ export default function RateForm({ instaId, birth }: Props) {
         body: JSON.stringify({
           instaId,
           birthCode: birth,
-          scoreLooks: scores.looks,
-          scorePersonality: scores.personality,
-          scoreLove: scores.love,
-          scoreManner: scores.manner,
-          scoreReunion: scores.reunion,
+          scoreHumor: scores.humor,
+          scoreLoyalty: scores.loyalty,
+          scoreTexting: scores.texting,
+          scoreVibes: scores.vibes,
+          scoreSecrets: scores.secrets,
           comment,
         }),
       });
